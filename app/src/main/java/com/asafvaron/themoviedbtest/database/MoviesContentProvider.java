@@ -17,7 +17,6 @@ import java.util.List;
 public class MoviesContentProvider extends ContentProvider {
     private static final String TAG = MoviesContentProvider.class.getSimpleName();
 
-    //////
     MoviesDbHelper moviesDbHelper;
 
     @Override
