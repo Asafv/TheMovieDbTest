@@ -15,6 +15,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- movies data base provider -->
+        <provider
+            android:name=".database.MoviesContentProvider"
+            android:authorities="com.asafvaron.themoviedbtest.provider"
+            android:exported="false" />
     </application>
 
 </manifest>
