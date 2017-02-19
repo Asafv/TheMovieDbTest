@@ -9,8 +9,6 @@ import android.provider.BaseColumns;
 
 public class MoviesContract {
 
-    // table name
-    public static final String TABLE_NAME = "movies";
 
     //the provider's authority
     public final static String AUTHORITY = "com.asafvaron.themoviedbtest.provider";
@@ -21,6 +19,9 @@ public class MoviesContract {
 
     // movie table
     public static class Movies implements BaseColumns {
+
+        // table name
+        public static final String TABLE_NAME = "movies";
 
         //uri
         public final static Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + TABLE_NAME);
