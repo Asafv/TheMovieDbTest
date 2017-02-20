@@ -16,10 +16,6 @@ public class MyApp extends Application {
         super.onCreate();
 
         mContext = getApplicationContext();
-
-        // testing MoviesApiEnum
-        // init request queue
-//        MoviesApiEnum.INSTANCE.getRequestQueue(getApplicationContext());
     }
 
     public static Context getContext() {
