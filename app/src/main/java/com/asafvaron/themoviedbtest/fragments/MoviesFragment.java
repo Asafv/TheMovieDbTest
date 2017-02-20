@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +20,7 @@ import com.asafvaron.themoviedbtest.MoviesApi;
 import com.asafvaron.themoviedbtest.R;
 import com.asafvaron.themoviedbtest.adapters.MoviesGridAdapter;
 import com.asafvaron.themoviedbtest.database.MoviesContract;
+import com.asafvaron.themoviedbtest.item_decorations.GridSpacingItemDecoration;
 import com.asafvaron.themoviedbtest.listeners.ResultCallback;
 import com.asafvaron.themoviedbtest.objects.MyMovie;
 
@@ -48,8 +51,18 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
 
         mProgress = (ProgressBar) root.findViewById(R.id.progress);
         mRvGridList = (RecyclerView) root.findViewById(R.id.rv_grid_list);
-
+        setupRecyclerView();
+        
         return root;
+    }
+
+    private void setupRecyclerView() {
+        mRvGridList.setHasFixedSize(true);
+        mRvGridList.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        mRvGridList.setItemAnimator(new DefaultItemAnimator());
+        // set itemDecoration for grid spacing
+        GridSpacingItemDecoration decoration = new GridSpacingItemDecoration(getContext(), R.dimen.grid_item_offset);
+        mRvGridList.addItemDecoration(decoration);
     }
 
     @Override
@@ -68,7 +81,7 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
                 if (data) {
                     Log.i(TAG, "onResult: restartLoader");
                     getLoaderManager().restartLoader(LOADER_ID, null, MoviesFragment.this);
-                }else
+                } else
                     Log.e(TAG, "onResult: ERR: " + err);
             }
         });
@@ -89,7 +102,8 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
             List<MyMovie> movieList = getMovies(c);
             Log.d(TAG, "movieList.size(): " + movieList.size());
 
-            mMoviesGridAdapter = new MoviesGridAdapter(getContext(), mRvGridList, movieList);
+            mMoviesGridAdapter = new MoviesGridAdapter(getContext(), movieList);
+            mRvGridList.setAdapter(mMoviesGridAdapter);
         } else {
             Log.d(TAG, "onLoadFinished: c == null");
             getSomeData();
@@ -114,7 +128,7 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
             m.setRuntime(c.getInt(c.getColumnIndex(MoviesContract.Movies.COLUMN_RUNTIME)));
             m.setVote_average(c.getInt(c.getColumnIndex(MoviesContract.Movies.COLUMN_VOTE_AVERAGE)));
             m.setVote_count(c.getInt(c.getColumnIndex(MoviesContract.Movies.COLUMN_VOTE_COUNT)));
-            m.setPoster(c.getString(c.getColumnIndex(MoviesContract.Movies.COLUMN_POSTER)));
+            m.setPoster_path(c.getString(c.getColumnIndex(MoviesContract.Movies.COLUMN_POSTER)));
             m.setRelease_date(c.getString(c.getColumnIndex(MoviesContract.Movies.COLUMN_RELEASE_DATE)));
             Log.d(TAG, "getMovies: m= " + m.toString());
             movies.add(m);

@@ -13,6 +13,8 @@ import com.android.volley.request.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.asafvaron.themoviedbtest.database.MoviesContract;
 import com.asafvaron.themoviedbtest.listeners.ResultCallback;
+import com.asafvaron.themoviedbtest.objects.MyMovie;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,7 +29,7 @@ public class MoviesApi {
 
     private static final String API_KEY = "?api_key=a2ddc78251984ac1b6853aab3885b44c";
     private static final String API_URL = "https://api.themoviedb.org/3/movie/";
-    private static final String IMAGE_URL = "https://image.tmdb.org/t/p/w500/"; // add .jpg
+    private static final String IMAGE_URL = "https://image.tmdb.org/t/p/w500"; // add .jpg
     private static final String NOW_PLAYING_MOVIES_URL = API_URL + "now_playing" + API_KEY;
 
 
@@ -109,42 +111,43 @@ public class MoviesApi {
     }
 
     private void addMovieToDb(JSONObject obj) {
-        Log.d(TAG, "addMovieToDb: " + obj.toString());
+        Log.d(TAG, "addMovieToDb: JSONObject:" + obj.toString());
+
+        Gson gson = new Gson();
+        MyMovie m = gson.fromJson(obj.toString(), MyMovie.class);
+
+        Log.d(TAG, "addMovieToDb: gson m = " + m.toString());
 
         ContentValues values = new ContentValues();
-        try {
-            if (obj.has("id"))
-                values.put(MoviesContract.Movies.COLUMN_MOVIE_ID, obj.getInt("id"));
+        if (obj.has("id"))
+            values.put(MoviesContract.Movies.COLUMN_MOVIE_ID, m.getId());
 
-            if (obj.has("title"))
-                values.put(MoviesContract.Movies.COLUMN_TITLE, obj.getString("title"));
+        if (obj.has("title"))
+            values.put(MoviesContract.Movies.COLUMN_TITLE, m.getTitle());
 
-            if (obj.has("original_title"))
-                values.put(MoviesContract.Movies.COLUMN_ORIGINAL_TITLE, obj.getString("original_title"));
+        if (obj.has("original_title"))
+            values.put(MoviesContract.Movies.COLUMN_ORIGINAL_TITLE, m.getOriginal_title());
 
-            if (obj.has("overview"))
-                values.put(MoviesContract.Movies.COLUMN_OVERVIEW, obj.getString("overview"));
+        if (obj.has("overview"))
+            values.put(MoviesContract.Movies.COLUMN_OVERVIEW, m.getOverview());
 
-            if (obj.has("runtime"))
-                values.put(MoviesContract.Movies.COLUMN_RUNTIME, obj.getInt("runtime"));
+        if (obj.has("runtime"))
+            values.put(MoviesContract.Movies.COLUMN_RUNTIME, m.getRuntime());
 
-            if (obj.has("vote_average"))
-                values.put(MoviesContract.Movies.COLUMN_VOTE_AVERAGE, obj.getInt("vote_average"));
+        if (obj.has("vote_average"))
+            values.put(MoviesContract.Movies.COLUMN_VOTE_AVERAGE, m.getVote_average());
 
-            if (obj.has("vote_count"))
-                values.put(MoviesContract.Movies.COLUMN_VOTE_COUNT, obj.getInt("vote_count"));
+        if (obj.has("vote_count"))
+            values.put(MoviesContract.Movies.COLUMN_VOTE_COUNT, m.getVote_count());
 
-            if (obj.has("poster_path"))
-                values.put(MoviesContract.Movies.COLUMN_POSTER, IMAGE_URL + obj.getString("poster_path"));
+        if (obj.has("poster_path"))
+            values.put(MoviesContract.Movies.COLUMN_POSTER, IMAGE_URL + m.getPoster_path());
 
-            if (obj.has("release_date"))
-                values.put(MoviesContract.Movies.COLUMN_RELEASE_DATE, obj.getString("release_date"));
+        if (obj.has("release_date"))
+            values.put(MoviesContract.Movies.COLUMN_RELEASE_DATE, m.getRelease_date());
 
-            MyApp.getContext().getContentResolver().insert(MoviesContract.Movies.CONTENT_URI, values);
+        MyApp.getContext().getContentResolver().insert(MoviesContract.Movies.CONTENT_URI, values);
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
 }

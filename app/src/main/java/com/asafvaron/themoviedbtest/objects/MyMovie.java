@@ -11,8 +11,8 @@ public class MyMovie {
     private String original_title;
     private String release_date;
     private String overview;
-    private String poster;
-    private int vote_average;
+    private String poster_path;
+    private float vote_average;
     private int vote_count;
     private int runtime;
 
@@ -57,19 +57,19 @@ public class MyMovie {
         this.overview = overview;
     }
 
-    public String getPoster() {
-        return poster;
+    public String getPoster_path() {
+        return poster_path;
     }
 
-    public void setPoster(String poster) {
-        this.poster = poster;
+    public void setPoster_path(String poster_path) {
+        this.poster_path = poster_path;
     }
 
-    public int getVote_average() {
+    public float getVote_average() {
         return vote_average;
     }
 
-    public void setVote_average(int vote_average) {
+    public void setVote_average(float vote_average) {
         this.vote_average = vote_average;
     }
 
@@ -91,6 +91,12 @@ public class MyMovie {
 
     @Override
     public String toString() {
-        return getTitle();
+        return "\n" + getTitle()
+                + "\n" + getOverview()
+                + "\n" + getRelease_date()
+                + "\n" + getPoster_path()
+                + "\n" + getRuntime()
+                + "\n" + getVote_average()
+                + "\n" + getVote_count();
     }
 }

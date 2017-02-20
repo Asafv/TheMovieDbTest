@@ -8,6 +8,6 @@
 
     <ImageView
         android:id="@+id/iv_movie_poster"
-        style="@style/MovieItemStyle"
+        style="@style/MovieImageItemStyle"
         android:src="@mipmap/ic_launcher" />
 </LinearLayout>
