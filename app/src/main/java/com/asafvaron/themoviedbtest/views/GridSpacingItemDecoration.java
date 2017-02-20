@@ -1,4 +1,4 @@
-package com.asafvaron.themoviedbtest.item_decorations;
+package com.asafvaron.themoviedbtest.views;
 
 import android.content.Context;
 import android.graphics.Rect;

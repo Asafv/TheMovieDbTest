@@ -16,22 +16,31 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.asafvaron.themoviedbtest.MoviesApi;
+import com.asafvaron.themoviedbtest.MyApp;
 import com.asafvaron.themoviedbtest.R;
+import com.asafvaron.themoviedbtest.activity.MainActivity;
 import com.asafvaron.themoviedbtest.adapters.MoviesGridAdapter;
 import com.asafvaron.themoviedbtest.database.MoviesContract;
-import com.asafvaron.themoviedbtest.item_decorations.GridSpacingItemDecoration;
-import com.asafvaron.themoviedbtest.listeners.ResultCallback;
-import com.asafvaron.themoviedbtest.objects.MyMovie;
+import com.asafvaron.themoviedbtest.views.GridSpacingItemDecoration;
+import com.asafvaron.themoviedbtest.model.Movie;
+import com.asafvaron.themoviedbtest.model.MoviesResponse;
+import com.asafvaron.themoviedbtest.rest.ApiClient;
+import com.asafvaron.themoviedbtest.rest.ApiInterface;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by asafvaron on 19/02/2017.
  */
 
-public class MoviesFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class MoviesFragment extends Fragment
+        implements LoaderManager.LoaderCallbacks<Cursor>,
+        MoviesGridAdapter.MoviesGridAdapterListener {
 
     private static final String TAG = MoviesFragment.class.getSimpleName();
 
@@ -39,6 +48,7 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
     private RecyclerView mRvGridList;
     private MoviesGridAdapter mMoviesGridAdapter;
     private ProgressBar mProgress;
+    private List<Movie> mCurrentMovieList;
 
     public static MoviesFragment newInstance() {
         return new MoviesFragment();
@@ -52,7 +62,7 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
         mProgress = (ProgressBar) root.findViewById(R.id.progress);
         mRvGridList = (RecyclerView) root.findViewById(R.id.rv_grid_list);
         setupRecyclerView();
-        
+
         return root;
     }
 
@@ -72,43 +82,57 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
         getLoaderManager().initLoader(LOADER_ID, null, this);
     }
 
-    private void getSomeData() {
-//        MoviesApiEnum.INSTANCE.getSomeMovies();
-        MoviesApi.getInstance().getSomeMovies(new ResultCallback<Boolean>() {
+    private void getTopRatedMovies() {
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+        Call<MoviesResponse> call = apiService.getTopRatedMovies();
+        call.enqueue(new Callback<MoviesResponse>() {
+            @Override
+            public void onResponse(Call<MoviesResponse> call, Response<MoviesResponse> response) {
+                List<Movie> topRated = response.body().getResults();
+                Log.d(TAG, "onResponse() returned: " + topRated.size());
+                saveTopRated(topRated);
+            }
 
             @Override
-            public void onResult(Boolean data, String err) {
-                if (data) {
-                    Log.i(TAG, "onResult: restartLoader");
-                    getLoaderManager().restartLoader(LOADER_ID, null, MoviesFragment.this);
-                } else
-                    Log.e(TAG, "onResult: ERR: " + err);
+            public void onFailure(Call<MoviesResponse> call, Throwable t) {
+                Log.e(TAG, "onFailure: ERR: " + t.getLocalizedMessage());
             }
         });
+    }
+
+    private void saveTopRated(List<Movie> topRated) {
+        for (Movie m : topRated) {
+            MyApp.getContext().getContentResolver()
+                    .insert(MoviesContract.TopRatedMovies.CONTENT_URI, m.getValues());
+        }
+        Log.d(TAG, "saveTopRated: restart loader");
+        getLoaderManager().restartLoader(LOADER_ID, null, this);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Log.d(TAG, "onCreateLoader: ");
         mProgress.setVisibility(View.VISIBLE);
-        return new CursorLoader(getContext(), MoviesContract.Movies.CONTENT_URI,
-                null, null, null, MoviesContract.Movies.COLUMN_MOVIE_ID + " asc");
+        return new CursorLoader(getContext(), MoviesContract.TopRatedMovies.CONTENT_URI,
+                null, null, null, MoviesContract.TopRatedMovies.COLUMN_MOVIE_ID + " asc");
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor c) {
         if (c.moveToNext()) {
             Log.d(TAG, "onLoadFinished: c != null");
-            List<MyMovie> movieList = getMovies(c);
-            Log.d(TAG, "movieList.size(): " + movieList.size());
+            mCurrentMovieList = getMovies(c);
+            Log.d(TAG, "mCurrentMovieList.size(): " + mCurrentMovieList.size());
 
-            mMoviesGridAdapter = new MoviesGridAdapter(getContext(), movieList);
+            mMoviesGridAdapter = new MoviesGridAdapter(mCurrentMovieList);
+            mMoviesGridAdapter.setListener(this);
             mRvGridList.setAdapter(mMoviesGridAdapter);
+            mProgress.setVisibility(View.GONE);
         } else {
-            Log.d(TAG, "onLoadFinished: c == null");
-            getSomeData();
+            Log.w(TAG, "onLoadFinished: c == null");
+            getTopRatedMovies();
         }
-        mProgress.setVisibility(View.GONE);
     }
 
     @Override
@@ -116,23 +140,28 @@ public class MoviesFragment extends Fragment implements LoaderManager.LoaderCall
         Log.d(TAG, "onLoaderReset: ");
     }
 
-    public List<MyMovie> getMovies(Cursor c) {
-        List<MyMovie> movies = new ArrayList<>();
+    public List<Movie> getMovies(Cursor c) {
+        List<Movie> movies = new ArrayList<>();
 
         while (c.moveToNext()) {
-            MyMovie m = new MyMovie();
-            m.setId(c.getInt(c.getColumnIndex(MoviesContract.Movies.COLUMN_MOVIE_ID)));
-            m.setTitle(c.getString(c.getColumnIndex(MoviesContract.Movies.COLUMN_TITLE)));
-            m.setOriginal_title(c.getString(c.getColumnIndex(MoviesContract.Movies.COLUMN_ORIGINAL_TITLE)));
-            m.setOverview(c.getString(c.getColumnIndex(MoviesContract.Movies.COLUMN_OVERVIEW)));
-            m.setRuntime(c.getInt(c.getColumnIndex(MoviesContract.Movies.COLUMN_RUNTIME)));
-            m.setVote_average(c.getInt(c.getColumnIndex(MoviesContract.Movies.COLUMN_VOTE_AVERAGE)));
-            m.setVote_count(c.getInt(c.getColumnIndex(MoviesContract.Movies.COLUMN_VOTE_COUNT)));
-            m.setPoster_path(c.getString(c.getColumnIndex(MoviesContract.Movies.COLUMN_POSTER)));
-            m.setRelease_date(c.getString(c.getColumnIndex(MoviesContract.Movies.COLUMN_RELEASE_DATE)));
+            Movie m = new Movie();
+            m.setId(c.getInt(c.getColumnIndex(MoviesContract.TopRatedMovies.COLUMN_MOVIE_ID)));
+            m.setTitle(c.getString(c.getColumnIndex(MoviesContract.TopRatedMovies.COLUMN_TITLE)));
+            m.setOriginalTitle(c.getString(c.getColumnIndex(MoviesContract.TopRatedMovies.COLUMN_ORIGINAL_TITLE)));
+            m.setOverview(c.getString(c.getColumnIndex(MoviesContract.TopRatedMovies.COLUMN_OVERVIEW)));
+            m.setVoteAverage(c.getDouble(c.getColumnIndex(MoviesContract.TopRatedMovies.COLUMN_VOTE_AVERAGE)));
+            m.setVoteCount(c.getInt(c.getColumnIndex(MoviesContract.TopRatedMovies.COLUMN_VOTE_COUNT)));
+            m.setPosterPath(c.getString(c.getColumnIndex(MoviesContract.TopRatedMovies.COLUMN_POSTER)));
+            m.setReleaseDate(c.getString(c.getColumnIndex(MoviesContract.TopRatedMovies.COLUMN_RELEASE_DATE)));
             Log.d(TAG, "getMovies: m= " + m.toString());
             movies.add(m);
         }
         return movies;
+    }
+
+    @Override
+    public void onMovieClicked(int pos) {
+        Movie movie = mCurrentMovieList.get(pos);
+        ((MainActivity) getActivity()).showInfoFragment(movie);
     }
 }

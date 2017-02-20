@@ -15,22 +15,22 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
 
     // create table
     private static final String SQL_CREATE_ENTRIES =
-            "CREATE TABLE " + MoviesContract.Movies.TABLE_NAME + " (" +
-                    MoviesContract.Movies._ID + " INTEGER PRIMARY KEY," +
-                    MoviesContract.Movies.COLUMN_MOVIE_ID + " REAL," +
-                    MoviesContract.Movies.COLUMN_TITLE + " TEXT," +
-                    MoviesContract.Movies.COLUMN_ORIGINAL_TITLE + " TEXT," +
-                    MoviesContract.Movies.COLUMN_RELEASE_DATE + " TEXT," +
-                    MoviesContract.Movies.COLUMN_OVERVIEW + " TEXT," +
-                    MoviesContract.Movies.COLUMN_POSTER + " TEXT," +
-//                    MoviesContract.Movies.COLUMN_POSTER + " BLOB," +
-                    MoviesContract.Movies.COLUMN_VOTE_AVERAGE + " REAL," +
-                    MoviesContract.Movies.COLUMN_VOTE_COUNT + " REAL," +
-                    MoviesContract.Movies.COLUMN_RUNTIME + " REAL)";
+            "CREATE TABLE " + MoviesContract.TopRatedMovies.TABLE_NAME + " (" +
+                    MoviesContract.TopRatedMovies._ID + " INTEGER PRIMARY KEY," +
+                    MoviesContract.TopRatedMovies.COLUMN_MOVIE_ID + " REAL," +
+                    MoviesContract.TopRatedMovies.COLUMN_TITLE + " TEXT," +
+                    MoviesContract.TopRatedMovies.COLUMN_ORIGINAL_TITLE + " TEXT," +
+                    MoviesContract.TopRatedMovies.COLUMN_RELEASE_DATE + " TEXT," +
+                    MoviesContract.TopRatedMovies.COLUMN_OVERVIEW + " TEXT," +
+                    MoviesContract.TopRatedMovies.COLUMN_POSTER + " TEXT," +
+//                    MoviesContract.TopRatedMovies.COLUMN_POSTER + " BLOB," +
+                    MoviesContract.TopRatedMovies.COLUMN_VOTE_AVERAGE + " REAL," +
+                    MoviesContract.TopRatedMovies.COLUMN_VOTE_COUNT + " REAL," +
+                    MoviesContract.TopRatedMovies.COLUMN_RUNTIME + " REAL)";
 
     // delete table
     private static final String SQL_DELETE_ENTRIES =
-            "DROP TABLE IF EXISTS " + MoviesContract.Movies.TABLE_NAME;
+            "DROP TABLE IF EXISTS " + MoviesContract.TopRatedMovies.TABLE_NAME;
 
     public MoviesDbHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);

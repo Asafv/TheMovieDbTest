@@ -1,6 +1,5 @@
 package com.asafvaron.themoviedbtest.adapters;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,7 +10,8 @@ import android.widget.TextView;
 
 import com.asafvaron.themoviedbtest.MyApp;
 import com.asafvaron.themoviedbtest.R;
-import com.asafvaron.themoviedbtest.objects.MyMovie;
+import com.asafvaron.themoviedbtest.fragments.MoviesFragment;
+import com.asafvaron.themoviedbtest.model.Movie;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
@@ -21,35 +21,50 @@ import java.util.List;
  */
 public class MoviesGridAdapter extends RecyclerView.Adapter<MoviesGridAdapter.MovieViewHolder> {
     private static final String TAG = MoviesGridAdapter.class.getSimpleName();
-    private final Context mContext;
-    private final List<MyMovie> mData;
-    private final LayoutInflater mInflater;
+    private final List<Movie> mData;
+    private MoviesGridAdapterListener mListener;
 
-    public MoviesGridAdapter(Context context, List<MyMovie> data) {
-        this.mContext = context;
+    public void setListener(MoviesFragment listener) {
+        this.mListener = (MoviesGridAdapterListener) listener;
+    }
+
+    public interface MoviesGridAdapterListener {
+        void onMovieClicked(int pos);
+    }
+
+    public MoviesGridAdapter(List<Movie> data) {
         this.mData = data;
-        this.mInflater = LayoutInflater.from(mContext);
     }
 
     @Override
     public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new MovieViewHolder(mInflater.inflate(R.layout.movie_grid_item, parent, false));
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_grid_item, parent, false);
+        return new MovieViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(MovieViewHolder holder, int position) {
-        MyMovie myMovie = mData.get(position);
-        Log.d(TAG, "onBindViewHolder() returned: " + myMovie.toString());
+        final Movie movie = mData.get(position);
+        final int pos = position;
 
-        String title = myMovie.getTitle();
+        String title = movie.getTitle();
         if (title == null || title.isEmpty())
-            title = myMovie.getOriginal_title();
+            title = movie.getOriginalTitle();
 
         holder.tv_title.setText(title);
         Glide.with(MyApp.getContext())
-                .load(myMovie.getPoster_path())
+                .load(movie.getPosterPath())
                 .placeholder(android.R.drawable.ic_menu_upload)
                 .into(holder.iv_poster);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: movie: " + movie);
+                mListener.onMovieClicked(pos);
+            }
+        });
+
     }
 
     @Override
