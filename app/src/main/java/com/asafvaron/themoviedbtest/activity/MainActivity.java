@@ -2,6 +2,7 @@ package com.asafvaron.themoviedbtest.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 
 import com.asafvaron.themoviedbtest.R;
 import com.asafvaron.themoviedbtest.fragments.MovieInfoFragment;
@@ -23,5 +24,12 @@ public class MainActivity extends AppCompatActivity {
         MovieInfoFragment movieInfoFragment = MovieInfoFragment.newInstance(movie);
         getSupportFragmentManager().beginTransaction().add(R.id.frags_container,
                 movieInfoFragment, MovieInfoFragment.class.getSimpleName()).addToBackStack(null).commit();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+//        return super.onCreateOptionsMenu(menu);
+        return true;
     }
 }

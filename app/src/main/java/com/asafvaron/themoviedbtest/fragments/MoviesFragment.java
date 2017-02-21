@@ -87,6 +87,8 @@ public class MoviesFragment extends Fragment
             getLoaderManager().initLoader(LOADER_ID, null, this);
         } else
             getTopRatedMovies();
+
+        db.close();
     }
 
     private void getTopRatedMovies() {
