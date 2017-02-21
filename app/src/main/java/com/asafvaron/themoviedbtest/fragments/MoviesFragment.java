@@ -85,7 +85,7 @@ public class MoviesFragment extends Fragment
     private void getTopRatedMovies() {
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
-        Call<MoviesResponse> call = apiService.getTopRatedMovies();
+        Call<MoviesResponse> call = apiService.getTopRatedMovies(ApiClient.API_KEY);
         call.enqueue(new Callback<MoviesResponse>() {
             @Override
             public void onResponse(Call<MoviesResponse> call, Response<MoviesResponse> response) {
