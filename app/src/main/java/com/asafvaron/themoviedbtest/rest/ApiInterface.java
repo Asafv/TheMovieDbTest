@@ -32,7 +32,4 @@ public interface ApiInterface {
             @Path("id") int movieId,
             @Query("api_key") String apiKey
     );
-
-
-
 }

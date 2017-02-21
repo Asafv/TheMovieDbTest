@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void showInfoFragment(Movie movie) {
         MovieInfoFragment movieInfoFragment = MovieInfoFragment.newInstance(movie);
-        getSupportFragmentManager().beginTransaction().replace(R.id.frags_container,
+        getSupportFragmentManager().beginTransaction().add(R.id.frags_container,
                 movieInfoFragment, MovieInfoFragment.class.getSimpleName()).addToBackStack(null).commit();
     }
 }

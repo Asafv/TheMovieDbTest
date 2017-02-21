@@ -1,6 +1,7 @@
 package com.asafvaron.themoviedbtest.fragments;
 
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -21,6 +22,7 @@ import com.asafvaron.themoviedbtest.R;
 import com.asafvaron.themoviedbtest.activity.MainActivity;
 import com.asafvaron.themoviedbtest.adapters.MoviesGridAdapter;
 import com.asafvaron.themoviedbtest.database.MoviesContract;
+import com.asafvaron.themoviedbtest.database.MoviesDbHelper;
 import com.asafvaron.themoviedbtest.views.GridSpacingItemDecoration;
 import com.asafvaron.themoviedbtest.model.Movie;
 import com.asafvaron.themoviedbtest.model.MoviesResponse;
@@ -79,12 +81,16 @@ public class MoviesFragment extends Fragment
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        getLoaderManager().initLoader(LOADER_ID, null, this);
+        SQLiteDatabase db = new MoviesDbHelper(getContext()).getReadableDatabase();
+        if (db.query(MoviesContract.TopRatedMovies.TABLE_NAME, null, null, null, null, null, null) != null) {
+            Log.d(TAG, "onActivityCreated: init loader");
+            getLoaderManager().initLoader(LOADER_ID, null, this);
+        } else
+            getTopRatedMovies();
     }
 
     private void getTopRatedMovies() {
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-
         Call<MoviesResponse> call = apiService.getTopRatedMovies(ApiClient.API_KEY);
         call.enqueue(new Callback<MoviesResponse>() {
             @Override
