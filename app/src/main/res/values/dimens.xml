@@ -2,5 +2,15 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!-- GridItem -->
+    <dimen name="grid_item_bkg_padding">5dp</dimen>
     <dimen name="grid_item_offset">8dp</dimen>
+    <dimen name="grid_item_textView_size">20sp</dimen>
+
+    <!-- InfoTextView dimens -->
+    <dimen name="info_textView_margin">4dp</dimen>
+    <dimen name="info_textView_size">20sp</dimen>
+    <dimen name="info_textView_overview_marginTop">20dp</dimen>
+
 </resources>
