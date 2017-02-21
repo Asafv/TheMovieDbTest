@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.asafvaron.themoviedbtest.R;
 import com.asafvaron.themoviedbtest.model.Movie;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 /**
  * Created by asafvaron on 20/02/2017.
@@ -42,6 +43,7 @@ public class MovieInfoFragment extends Fragment {
 
         Glide.with(getActivity())
                 .load(mMovie.getPosterPath())
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into((ImageView) root.findViewById(R.id.iv_poster));
 
         ((TextView)root.findViewById(R.id.tv_title)).setText(mMovie.getTitle());

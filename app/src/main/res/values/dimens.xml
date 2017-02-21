@@ -9,8 +9,10 @@
     <dimen name="grid_item_textView_size">20sp</dimen>
 
     <!-- InfoTextView dimens -->
+    <dimen name="info_textView_title_size">22sp</dimen>
     <dimen name="info_textView_margin">4dp</dimen>
-    <dimen name="info_textView_size">20sp</dimen>
+    <dimen name="info_textView_size">18sp</dimen>
     <dimen name="info_textView_overview_marginTop">20dp</dimen>
+    <dimen name="movie_info_layout_padding">8dp</dimen>
 
 </resources>
