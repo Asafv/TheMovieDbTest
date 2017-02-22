@@ -1,5 +1,7 @@
 package com.asafvaron.themoviedbtest.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.IntegerRes;
@@ -55,6 +57,7 @@ public class MoviesFragment extends Fragment
     private List<Movie> mCurrentMovieList;
     private ApiInterface mApiService;
     private String mCurrentDbType;
+    private SharedPreferences mPrefs;
 
     @BindView(R.id.progress)
     ProgressBar mProgress;
@@ -69,15 +72,19 @@ public class MoviesFragment extends Fragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate: ");
         setHasOptionsMenu(true);
+        mPrefs = MyApp.getContext().getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
+
         mApiService = ApiClient.getClient().create(ApiInterface.class);
-        mCurrentDbType = MoviesContract.MovieTypes.NOW_PLAYING;
+        mCurrentDbType = mPrefs.getString("last_db_type", MoviesContract.MovieTypes.NOW_PLAYING);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView: ");
         View root = inflater.inflate(R.layout.movies_frag_layout, container, false);
         ButterKnife.bind(this, root);
         setupRecyclerView();
@@ -87,6 +94,7 @@ public class MoviesFragment extends Fragment
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        Log.d(TAG, "onActivityCreated: ");
 
         try {
             getLoaderManager().initLoader(LOADER_ID, null, this);
@@ -136,7 +144,12 @@ public class MoviesFragment extends Fragment
                 mCurrentDbType = MoviesContract.MovieTypes.NOW_PLAYING;
                 break;
         }
+        saveLastDbType(mCurrentDbType);
         getMoviesFromApi(call);
+    }
+
+    private void saveLastDbType(String currentDbType) {
+        mPrefs.edit().putString("last_db_type", currentDbType).apply();
     }
 
     private void setupRecyclerView() {
@@ -193,6 +206,7 @@ public class MoviesFragment extends Fragment
         Log.d(TAG, "onCreateLoader: ");
         mProgress.setVisibility(View.VISIBLE);
 
+        // query the database using the movie type
         String selection = MoviesContract.Movies.COLUMN_TYPE + "=?";
         String[] selectionArgs = {mCurrentDbType};
 

@@ -18,15 +18,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showMovieGridFragment() {
-        getSupportFragmentManager().beginTransaction().replace(R.id.frags_container,
-                MoviesFragment.newInstance(), MoviesFragment.class.getSimpleName()).commit();
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                .replace(R.id.frags_container, MoviesFragment.newInstance(), MoviesFragment.class.getSimpleName())
+                .commit();
     }
 
     public void showInfoFragment(Movie movie) {
         MovieInfoFragment movieInfoFragment = MovieInfoFragment.newInstance(movie);
         getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-                .replace(R.id.frags_container, movieInfoFragment, MovieInfoFragment.class.getSimpleName())
+                .add(R.id.frags_container, movieInfoFragment, MovieInfoFragment.class.getSimpleName())
                 .addToBackStack(null).commit();
     }
 }
