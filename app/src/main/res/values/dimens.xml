@@ -7,6 +7,7 @@
     <dimen name="grid_item_bkg_padding">5dp</dimen>
     <dimen name="grid_item_offset">8dp</dimen>
     <dimen name="grid_item_textView_size">20sp</dimen>
+    <dimen name="grid_item_textView_padding">2dp</dimen>
 
     <!-- InfoTextView dimens -->
     <dimen name="info_textView_title_size">22sp</dimen>

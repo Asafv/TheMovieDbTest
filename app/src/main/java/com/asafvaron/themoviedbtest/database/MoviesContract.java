@@ -36,9 +36,9 @@ public class MoviesContract {
     }
 
     public class MovieTypes {
-        public static final String NOW_PLAYING = "now_playing";
-        public static final String POPULAR = "popular";
-        public static final String TOP_RATED = "top_rated";
-        public static final String UPCOMING = "upcoming";
+        public static final String NOW_PLAYING = "Now Playing";
+        public static final String POPULAR = "Popular";
+        public static final String TOP_RATED = "Top Rated";
+        public static final String UPCOMING = "Upcoming";
     }
 }

@@ -106,6 +106,7 @@ public class MoviesFragment extends Fragment
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        changeActionbarTitle(mCurrentDbType);
         inflater.inflate(R.menu.movie_grid_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -146,6 +147,11 @@ public class MoviesFragment extends Fragment
         }
         saveLastDbType(mCurrentDbType);
         getMoviesFromApi(call);
+        changeActionbarTitle(mCurrentDbType);
+    }
+
+    private void changeActionbarTitle(String title) {
+        ((MainActivity)getActivity()).getSupportActionBar().setTitle(mCurrentDbType);
     }
 
     private void saveLastDbType(String currentDbType) {

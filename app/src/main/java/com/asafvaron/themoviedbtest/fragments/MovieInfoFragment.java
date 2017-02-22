@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.asafvaron.themoviedbtest.R;
+import com.asafvaron.themoviedbtest.activity.MainActivity;
 import com.asafvaron.themoviedbtest.model.Movie;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -80,6 +81,7 @@ public class MovieInfoFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.info_menu, menu);
-//        super.onCreateOptionsMenu(menu, inflater);
+        ((MainActivity)getActivity()).getSupportActionBar().setTitle(mMovie.getTitle());
+        super.onCreateOptionsMenu(menu, inflater);
     }
 }
