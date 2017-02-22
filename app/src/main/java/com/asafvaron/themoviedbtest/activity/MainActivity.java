@@ -2,7 +2,6 @@ package com.asafvaron.themoviedbtest.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
 
 import com.asafvaron.themoviedbtest.R;
 import com.asafvaron.themoviedbtest.fragments.MovieInfoFragment;
@@ -15,21 +14,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        showMovieGridFragment();
+    }
 
+    public void showMovieGridFragment() {
         getSupportFragmentManager().beginTransaction().replace(R.id.frags_container,
                 MoviesFragment.newInstance(), MoviesFragment.class.getSimpleName()).commit();
     }
 
     public void showInfoFragment(Movie movie) {
         MovieInfoFragment movieInfoFragment = MovieInfoFragment.newInstance(movie);
-        getSupportFragmentManager().beginTransaction().add(R.id.frags_container,
-                movieInfoFragment, MovieInfoFragment.class.getSimpleName()).addToBackStack(null).commit();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-//        return super.onCreateOptionsMenu(menu);
-        return true;
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                .replace(R.id.frags_container, movieInfoFragment, MovieInfoFragment.class.getSimpleName())
+                .addToBackStack(null).commit();
     }
 }

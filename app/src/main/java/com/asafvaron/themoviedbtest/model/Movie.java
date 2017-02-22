@@ -58,7 +58,6 @@ public class Movie implements Serializable{
 
     @SerializedName("vote_average")
     private Double voteAverage;
-    private ContentValues values;
 
     public Movie(String posterPath, boolean adult, String overview, String releaseDate,
                  List<Integer> genreIds, Integer id, String originalTitle, String originalLanguage,
@@ -172,7 +171,7 @@ public class Movie implements Serializable{
         this.voteAverage = voteAverage;
     }
 
-    public ContentValues getValues() {
+    public ContentValues getValues(String dbType) {
         ContentValues values = new ContentValues();
         values.put(MoviesContract.Movies.COLUMN_MOVIE_ID, getId());
         values.put(MoviesContract.Movies.COLUMN_TITLE, getTitle());
@@ -181,6 +180,7 @@ public class Movie implements Serializable{
         values.put(MoviesContract.Movies.COLUMN_POSTER, IMAGE_URL + getPosterPath());
         values.put(MoviesContract.Movies.COLUMN_VOTE_AVERAGE, getVoteAverage());
         values.put(MoviesContract.Movies.COLUMN_VOTE_COUNT, getVoteCount());
+        values.put(MoviesContract.Movies.COLUMN_TYPE, dbType);
         return values;
     }
 }

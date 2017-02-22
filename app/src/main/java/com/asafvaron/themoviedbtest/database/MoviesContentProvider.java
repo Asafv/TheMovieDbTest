@@ -17,8 +17,7 @@ import java.util.List;
 public class MoviesContentProvider extends ContentProvider {
     private static final String TAG = MoviesContentProvider.class.getSimpleName();
 
-    // test pull
-    MoviesDbHelper moviesDbHelper;
+    private MoviesDbHelper moviesDbHelper;
 
     @Override
     public boolean onCreate() {
@@ -90,7 +89,7 @@ public class MoviesContentProvider extends ContentProvider {
      * @param uri - used to get the tables uri
      * @return only the tables name
      */
-    private String getTableName(Uri uri) {
+    public static String getTableName(Uri uri) {
         // retrieving the path after the authority
         List<String> segments = uri.getPathSegments();
         return segments.get(0);

@@ -16,6 +16,9 @@ import com.asafvaron.themoviedbtest.model.Movie;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by asafvaron on 20/02/2017.
  */
@@ -23,6 +26,21 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 public class MovieInfoFragment extends Fragment {
     private static final String TAG = MovieInfoFragment.class.getSimpleName();
     private Movie mMovie;
+
+    @BindView(R.id.tv_title)
+    TextView mTitle;
+
+    @BindView(R.id.tv_overview)
+    TextView mOverview;
+
+    @BindView(R.id.tv_release_date)
+    TextView mReleaseDate;
+
+    @BindView(R.id.tv_vote_average)
+    TextView mVoteRate;
+
+    @BindView(R.id.iv_poster)
+    ImageView mPoster;
 
     public static MovieInfoFragment newInstance(Movie movie) {
         MovieInfoFragment fragment = new MovieInfoFragment();
@@ -36,7 +54,7 @@ public class MovieInfoFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        if (getArguments()!=null)
+        if (getArguments() != null)
             mMovie = (Movie) getArguments().getSerializable("movie");
     }
 
@@ -44,16 +62,17 @@ public class MovieInfoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.movie_info_layout, container, false);
+        ButterKnife.bind(this, root);
 
         Glide.with(getActivity())
                 .load(mMovie.getPosterPath())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .into((ImageView) root.findViewById(R.id.iv_poster));
+                .into(mPoster);
 
-        ((TextView)root.findViewById(R.id.tv_title)).setText(mMovie.getTitle());
-        ((TextView)root.findViewById(R.id.tv_overview)).setText(mMovie.getOverview());
-        ((TextView)root.findViewById(R.id.tv_release_date)).setText(mMovie.getReleaseDate());
-        ((TextView)root.findViewById(R.id.tv_vote_average)).setText(String.valueOf(mMovie.getVoteAverage()));
+        mTitle.setText(mMovie.getTitle());
+        mOverview.setText(mMovie.getOverview());
+        mReleaseDate.setText(mMovie.getReleaseDate());
+        mVoteRate.setText(String.valueOf(mMovie.getVoteAverage()));
 
         return root;
     }
