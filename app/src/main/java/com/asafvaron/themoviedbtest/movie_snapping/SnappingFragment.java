@@ -97,6 +97,7 @@ public class SnappingFragment extends Fragment implements SnapAdapter.SnapAdapte
                     }
                 });
 
+        // get vertical list
         mApiService.getTopRatedMovies(ApiClient.API_KEY)
                 .enqueue(new Callback<MoviesResponse>() {
                     @Override
