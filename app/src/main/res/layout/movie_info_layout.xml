@@ -24,14 +24,14 @@
             style="@style/InfoTextViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_title" />
+            android:layout_below="@id/tv_title" />
 
         <TextView
             android:id="@+id/tv_vote_average"
             style="@style/InfoTextViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_release_date" />
+            android:layout_below="@id/tv_release_date" />
 
         <TextView
             android:id="@+id/tv_runtime"
@@ -45,7 +45,7 @@
             style="@style/InfoTextViewOverviewStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/iv_poster" />
+            android:layout_below="@id/iv_poster" />
 
     </RelativeLayout>
 </ScrollView>
