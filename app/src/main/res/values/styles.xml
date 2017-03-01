@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -26,9 +26,7 @@
 
     <style name="GridItemImageViewStyle">
         <item name="android:layout_width">185dp</item>
-        <item name="android:layout_height">200dp</item>
-        <item name="android:cropToPadding">true</item>
-        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_height">220dp</item>
     </style>
 
     <style name="MovieInfoImageStyle">
@@ -68,5 +66,8 @@
         <item name="android:textSize">@dimen/info_textView_size</item>
     </style>
 
+    <style name="Toolbar" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:textColorPrimary">@android:color/white</item>
+    </style>
 
 </resources>

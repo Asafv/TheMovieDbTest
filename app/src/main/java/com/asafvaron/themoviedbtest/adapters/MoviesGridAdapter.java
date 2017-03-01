@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.asafvaron.themoviedbtest.MyApp;
 import com.asafvaron.themoviedbtest.R;
-import com.asafvaron.themoviedbtest.fragments.MoviesFragment;
+import com.asafvaron.themoviedbtest.fragments.MoviesGridFragment;
 import com.asafvaron.themoviedbtest.model.Movie;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -25,7 +25,7 @@ public class MoviesGridAdapter extends RecyclerView.Adapter<MoviesGridAdapter.Mo
     private final List<Movie> mData;
     private MoviesGridAdapterListener mListener;
 
-    public void setListener(MoviesFragment listener) {
+    public void setListener(MoviesGridFragment listener) {
         this.mListener = (MoviesGridAdapterListener) listener;
     }
 

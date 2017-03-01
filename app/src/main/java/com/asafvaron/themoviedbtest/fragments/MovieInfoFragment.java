@@ -3,13 +3,17 @@ package com.asafvaron.themoviedbtest.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.asafvaron.themoviedbtest.R;
 import com.asafvaron.themoviedbtest.activity.MainActivity;
@@ -55,8 +59,10 @@ public class MovieInfoFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        if (getArguments() != null)
+
+        if (getArguments() != null) {
             mMovie = (Movie) getArguments().getSerializable("movie");
+        }
     }
 
     @Nullable
@@ -80,8 +86,33 @@ public class MovieInfoFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        Log.d(TAG, "onCreateOptionsMenu: ");
         inflater.inflate(R.menu.info_menu, menu);
-        ((MainActivity)getActivity()).getSupportActionBar().setTitle(mMovie.getTitle());
+        // XXX Yossi please let me know if that's the way
+        ActionBar ab = ((MainActivity) getActivity()).getSupportActionBar();
+        if (ab != null) {
+            ab.setTitle(getActivity().getString(R.string.movie_info_ab_title));
+            ab.setDisplayHomeAsUpEnabled(true);
+            ab.setDisplayShowHomeEnabled(true);
+        }
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(TAG, "onOptionsItemSelected: ");
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Log.d(TAG, "android.R.id.home");
+                getActivity().onBackPressed();
+                return true;
+            case R.id.action_favorite:
+                Log.d(TAG, "action_favorite");
+                Toast.makeText(getContext(), "Add to favorites", Toast.LENGTH_SHORT).show();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

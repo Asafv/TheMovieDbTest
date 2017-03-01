@@ -6,4 +6,8 @@
     <string name="action_popular">Popular</string>
     <string name="action_upcoming">Upcoming</string>
     <string name="action_now_playing">Now Playing</string>
+    <string name="action_recommended">Recommended</string>
+    <string name="gridImageDesc">Movie Poster</string>
+    <string name="movie_poster_desc">Movie Poster</string>
+    <string name="movie_info_ab_title">Movie Info</string>
 </resources>

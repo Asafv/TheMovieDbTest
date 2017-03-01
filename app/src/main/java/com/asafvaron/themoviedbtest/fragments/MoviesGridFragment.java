@@ -4,12 +4,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.annotation.IntegerRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -46,11 +46,11 @@ import retrofit2.Response;
  * Created by asafvaron on 19/02/2017.
  */
 
-public class MoviesFragment extends Fragment
+public class MoviesGridFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor>,
         MoviesGridAdapter.MoviesGridAdapterListener {
 
-    private static final String TAG = MoviesFragment.class.getSimpleName();
+    private static final String TAG = MoviesGridFragment.class.getSimpleName();
 
     private static final int LOADER_ID = 1;
     private MoviesGridAdapter mMoviesGridAdapter;
@@ -65,8 +65,8 @@ public class MoviesFragment extends Fragment
     @BindView(R.id.rv_grid_list)
     RecyclerView mRvGridList;
 
-    public static MoviesFragment newInstance() {
-        return new MoviesFragment();
+    public static MoviesGridFragment newInstance() {
+        return new MoviesGridFragment();
     }
 
     @Override
@@ -85,7 +85,7 @@ public class MoviesFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView: ");
-        View root = inflater.inflate(R.layout.movies_frag_layout, container, false);
+        View root = inflater.inflate(R.layout.movies_grid_frag_layout, container, false);
         ButterKnife.bind(this, root);
         setupRecyclerView();
         return root;
@@ -106,52 +106,57 @@ public class MoviesFragment extends Fragment
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        changeActionbarTitle(mCurrentDbType);
+        changeActionbarTitle();
         inflater.inflate(R.menu.movie_grid_menu, menu);
+        // XXX Yossi please let me know if that's the way
+        ActionBar ab = ((MainActivity)getActivity()).getSupportActionBar();
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(false);
+            ab.setDisplayShowHomeEnabled(false);
+        }
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() != 0) {
-            Log.d(TAG, "onOptionsItemSelected: menu clicked");
-            querySearch(item.getItemId());
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+        final int itemId = item.getItemId();
 
-    private void querySearch(@IntegerRes int itemId) {
         Call<MoviesResponse> call;
         switch (itemId) {
             case R.id.action_now_playing:
                 call = mApiService.getNowPlayingMovies(ApiClient.API_KEY);
                 mCurrentDbType = MoviesContract.MovieTypes.NOW_PLAYING;
-                break;
+                querySearch(call);
+                return true;
             case R.id.action_upcoming:
                 call = mApiService.getUpcomingMovies(ApiClient.API_KEY);
                 mCurrentDbType = MoviesContract.MovieTypes.UPCOMING;
-                break;
+                querySearch(call);
+                return true;
             case R.id.action_top_rated:
                 call = mApiService.getTopRatedMovies(ApiClient.API_KEY);
                 mCurrentDbType = MoviesContract.MovieTypes.TOP_RATED;
-                break;
+                querySearch(call);
+                return true;
             case R.id.action_popular:
                 call = mApiService.getPopularMovies(ApiClient.API_KEY);
                 mCurrentDbType = MoviesContract.MovieTypes.POPULAR;
-                break;
+                querySearch(call);
+                return true;
             default:
-                call = mApiService.getNowPlayingMovies(ApiClient.API_KEY);
-                mCurrentDbType = MoviesContract.MovieTypes.NOW_PLAYING;
-                break;
+                return super.onOptionsItemSelected(item);
         }
-        saveLastDbType(mCurrentDbType);
-        getMoviesFromApi(call);
-        changeActionbarTitle(mCurrentDbType);
     }
 
-    private void changeActionbarTitle(String title) {
-        ((MainActivity)getActivity()).getSupportActionBar().setTitle(mCurrentDbType);
+    private void querySearch(Call<MoviesResponse> call) {
+        mCurrentMovieList = null;
+        saveLastDbType(mCurrentDbType);
+        getMoviesFromApi(call);
+        changeActionbarTitle();
+    }
+
+    private void changeActionbarTitle() {
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle(mCurrentDbType);
     }
 
     private void saveLastDbType(String currentDbType) {
@@ -222,6 +227,9 @@ public class MoviesFragment extends Fragment
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor c) {
+        if (mCurrentMovieList != null)
+            return;
+
         if (c.moveToNext()) {
             Log.d(TAG, "onLoadFinished: c != null");
             mCurrentMovieList = getMovies(c);
@@ -255,7 +263,7 @@ public class MoviesFragment extends Fragment
             m.setVoteCount(c.getInt(c.getColumnIndex(MoviesContract.Movies.COLUMN_VOTE_COUNT)));
             m.setPosterPath(c.getString(c.getColumnIndex(MoviesContract.Movies.COLUMN_POSTER)));
             m.setReleaseDate(c.getString(c.getColumnIndex(MoviesContract.Movies.COLUMN_RELEASE_DATE)));
-            Log.d(TAG, "getMovies: m= " + m.toString());
+//            Log.d(TAG, "getMovies: m= " + m.toString());
             movies.add(m);
         }
         return movies;
