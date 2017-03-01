@@ -9,26 +9,27 @@ import com.asafvaron.themoviedbtest.fragments.MovieInfoFragment;
 import com.asafvaron.themoviedbtest.fragments.MoviesGridFragment;
 import com.asafvaron.themoviedbtest.model.Movie;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
-        setupToolbar();
+        setSupportActionBar(mToolbar);
 
         if (null == savedInstanceState) {
             showMovieGridFragment();
         }
-    }
-
-
-    private void setupToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
     }
 
     public void showMovieGridFragment() {

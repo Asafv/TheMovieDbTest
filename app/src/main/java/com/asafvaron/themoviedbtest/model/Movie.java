@@ -15,8 +15,6 @@ import java.util.List;
 public class Movie implements Serializable{
     private static final String TAG = Movie.class.getSimpleName();
 
-    private static final String IMAGE_URL = "https://image.tmdb.org/t/p/w500"; // add .jpg
-
     @SerializedName("poster_path")
     private String posterPath;
 
@@ -177,7 +175,7 @@ public class Movie implements Serializable{
         values.put(MoviesContract.Movies.COLUMN_TITLE, getTitle());
         values.put(MoviesContract.Movies.COLUMN_OVERVIEW, getOverview());
         values.put(MoviesContract.Movies.COLUMN_RELEASE_DATE, getReleaseDate());
-        values.put(MoviesContract.Movies.COLUMN_POSTER, IMAGE_URL + getPosterPath());
+        values.put(MoviesContract.Movies.COLUMN_POSTER, getPosterPath());
         values.put(MoviesContract.Movies.COLUMN_VOTE_AVERAGE, getVoteAverage());
         values.put(MoviesContract.Movies.COLUMN_VOTE_COUNT, getVoteCount());
         values.put(MoviesContract.Movies.COLUMN_TYPE, dbType);

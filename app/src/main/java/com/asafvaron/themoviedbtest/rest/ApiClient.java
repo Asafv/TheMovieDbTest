@@ -11,6 +11,7 @@ public class ApiClient {
 
     public static final String API_KEY = "a2ddc78251984ac1b6853aab3885b44c";
     private static final String BASE_URL = "https://api.themoviedb.org/3/";
+    public static final String IMAGE_URL = "https://image.tmdb.org/t/p/w500";
 
     private static Retrofit retrofit = null;
 

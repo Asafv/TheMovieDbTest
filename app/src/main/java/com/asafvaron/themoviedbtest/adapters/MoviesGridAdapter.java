@@ -12,6 +12,7 @@ import com.asafvaron.themoviedbtest.MyApp;
 import com.asafvaron.themoviedbtest.R;
 import com.asafvaron.themoviedbtest.fragments.MoviesGridFragment;
 import com.asafvaron.themoviedbtest.model.Movie;
+import com.asafvaron.themoviedbtest.rest.ApiClient;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
@@ -54,7 +55,7 @@ public class MoviesGridAdapter extends RecyclerView.Adapter<MoviesGridAdapter.Mo
 
         holder.tv_title.setText(title);
         Glide.with(MyApp.getContext())
-                .load(movie.getPosterPath())
+                .load(ApiClient.IMAGE_URL + movie.getPosterPath())
                 .placeholder(android.R.drawable.ic_menu_upload)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(holder.iv_poster);
