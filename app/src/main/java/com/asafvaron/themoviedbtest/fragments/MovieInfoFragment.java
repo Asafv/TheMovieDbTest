@@ -18,7 +18,6 @@ import android.widget.Toast;
 import com.asafvaron.themoviedbtest.R;
 import com.asafvaron.themoviedbtest.activity.MainActivity;
 import com.asafvaron.themoviedbtest.model.Movie;
-import com.asafvaron.themoviedbtest.movie_snapping.MovieSnapActivity;
 import com.asafvaron.themoviedbtest.rest.ApiClient;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -90,15 +89,8 @@ public class MovieInfoFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         Log.d(TAG, "onCreateOptionsMenu: ");
         inflater.inflate(R.menu.info_menu, menu);
-        // XXX Yossi please let me know if that's the way
 
-        ActionBar ab;
-        try {
-            ab = ((MainActivity) getActivity()).getSupportActionBar();
-        } catch (Exception e) {
-            ab = ((MovieSnapActivity) getActivity()).getSupportActionBar();
-        }
-
+        ActionBar ab = ((MainActivity) getActivity()).getSupportActionBar();
         if (ab != null) {
             ab.setTitle(getActivity().getString(R.string.movie_info_ab_title));
             ab.setDisplayHomeAsUpEnabled(true);

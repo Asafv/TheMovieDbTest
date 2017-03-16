@@ -1,17 +1,14 @@
 package com.asafvaron.themoviedbtest;
 
-import com.asafvaron.themoviedbtest.adapters.MoviesGridAdapter;
 import com.asafvaron.themoviedbtest.fragments.MovieInfoFragment;
-import com.asafvaron.themoviedbtest.fragments.MoviesGridFragment;
 import com.asafvaron.themoviedbtest.model.Movie;
+import com.asafvaron.themoviedbtest.mvp_grid.MoviesGridFragment;
 import com.asafvaron.themoviedbtest.rest.ApiClient;
 import com.asafvaron.themoviedbtest.rest.ApiInterface;
 import com.google.common.collect.Lists;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -31,8 +28,6 @@ public class ExampleUnitTest {
         super();
     }
 
-    @Captor
-    private ArgumentCaptor<MoviesGridAdapter.MoviesGridAdapterListener> moviesGridAdapterListenerArgumentCaptor;
 
     @Mock
     private static List<Movie> MOVIE_LIST = Lists.newArrayList(

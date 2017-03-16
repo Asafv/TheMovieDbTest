@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.asafvaron.themoviedbtest.R;
+import com.asafvaron.themoviedbtest.activity.MainActivity;
 import com.asafvaron.themoviedbtest.fragments.MovieInfoFragment;
 import com.asafvaron.themoviedbtest.model.Movie;
 import com.asafvaron.themoviedbtest.model.MoviesResponse;
@@ -122,8 +123,8 @@ public class SnappingFragment extends Fragment implements SnapAdapter.SnapAdapte
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        ((MovieSnapActivity) getActivity()).getSupportActionBar().setTitle("Movies Snap List");
-        ((MovieSnapActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle("Movies Snap List");
+        ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
 
     @Override

@@ -10,8 +10,8 @@ import android.widget.TextView;
 
 import com.asafvaron.themoviedbtest.MyApp;
 import com.asafvaron.themoviedbtest.R;
-import com.asafvaron.themoviedbtest.fragments.MoviesGridFragment;
 import com.asafvaron.themoviedbtest.model.Movie;
+import com.asafvaron.themoviedbtest.mvp_grid.GridContract;
 import com.asafvaron.themoviedbtest.rest.ApiClient;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -22,20 +22,21 @@ import java.util.List;
  * Created by asafvaron on 19/02/2017.
  */
 public class MoviesGridAdapter extends RecyclerView.Adapter<MoviesGridAdapter.MovieViewHolder> {
+
     private static final String TAG = MoviesGridAdapter.class.getSimpleName();
-    private final List<Movie> mData;
-    private MoviesGridAdapterListener mListener;
 
-    public void setListener(MoviesGridFragment listener) {
-        this.mListener = (MoviesGridAdapterListener) listener;
-    }
+    private List<Movie> mData;
+    private final GridContract.View mListener;
 
-    public interface MoviesGridAdapterListener {
-        void onMovieClicked(int pos);
-    }
-
-    public MoviesGridAdapter(List<Movie> data) {
+    /**
+     * receives a List of Movie and the View that presents the data
+     *
+     * @param data
+     * @param mView
+     */
+    public MoviesGridAdapter(List<Movie> data, GridContract.View mView) {
         this.mData = data;
+        mListener = mView;
     }
 
     @Override
@@ -47,13 +48,15 @@ public class MoviesGridAdapter extends RecyclerView.Adapter<MoviesGridAdapter.Mo
     @Override
     public void onBindViewHolder(MovieViewHolder holder, int position) {
         final Movie movie = mData.get(position);
-        final int pos = position;
 
+        // set the title
         String title = movie.getTitle();
-        if (title == null || title.isEmpty())
+        if (title == null || title.isEmpty()) {
             title = movie.getOriginalTitle();
-
+        }
         holder.tv_title.setText(title);
+
+        // set the image
         Glide.with(MyApp.getContext())
                 .load(ApiClient.IMAGE_URL + movie.getPosterPath())
                 .placeholder(android.R.drawable.ic_menu_upload)
@@ -64,15 +67,22 @@ public class MoviesGridAdapter extends RecyclerView.Adapter<MoviesGridAdapter.Mo
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: movie: " + movie);
-                mListener.onMovieClicked(pos);
+                mListener.onMovieClicked(movie);
             }
         });
-
     }
 
     @Override
     public int getItemCount() {
         return mData.size();
+    }
+
+    public void setData(List<Movie> movies) {
+        // update only if there is a change in data
+        if (mData != movies) {
+            mData = movies;
+            notifyDataSetChanged();
+        }
     }
 
     class MovieViewHolder extends RecyclerView.ViewHolder {
