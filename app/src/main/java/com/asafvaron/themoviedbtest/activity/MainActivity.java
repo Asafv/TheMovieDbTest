@@ -8,9 +8,9 @@ import com.asafvaron.themoviedbtest.R;
 import com.asafvaron.themoviedbtest.Utils.Consts;
 import com.asafvaron.themoviedbtest.Utils.Prefs;
 import com.asafvaron.themoviedbtest.fragments.MovieInfoFragment;
-import com.asafvaron.themoviedbtest.mvp_grid.MoviesGridFragment;
 import com.asafvaron.themoviedbtest.model.Movie;
 import com.asafvaron.themoviedbtest.movie_snapping.SnappingFragment;
+import com.asafvaron.themoviedbtest.mvp_grid.MoviesGridFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -69,5 +69,14 @@ public class MainActivity extends AppCompatActivity {
                         MovieInfoFragment.newInstance(movie), MovieInfoFragment.class.getSimpleName())
                 .addToBackStack(null)
                 .commit();
+    }
+
+    public void closeInfoFragIfOpen() {
+        MovieInfoFragment frag = (MovieInfoFragment) getSupportFragmentManager()
+                .findFragmentByTag(MovieInfoFragment.class.getSimpleName());
+
+        if (frag != null) {
+            onBackPressed();
+        }
     }
 }

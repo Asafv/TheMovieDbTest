@@ -42,6 +42,7 @@ class GridPresenter implements GridContract.Actions {
             public void onSuccessLoad(List<Movie> movies) {
                 Log.i(TAG, "onSuccessLoad: ");
                 mView.updateProgress(false);
+                mView.closeInfoFragIfOpen();
                 mView.onSuccessMoviesLoaded(movies);
             }
 

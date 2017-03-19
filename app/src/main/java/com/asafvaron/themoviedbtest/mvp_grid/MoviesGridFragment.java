@@ -144,6 +144,11 @@ public class MoviesGridFragment extends Fragment
     }
 
     @Override
+    public void closeInfoFragIfOpen() {
+        ((MainActivity)getActivity()).closeInfoFragIfOpen();
+    }
+
+    @Override
     public void onFailedLoadMovies(String error) {
         Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
     }
