@@ -17,7 +17,7 @@ import android.widget.ProgressBar;
 
 import com.asafvaron.themoviedbtest.R;
 import com.asafvaron.themoviedbtest.activity.MainActivity;
-import com.asafvaron.themoviedbtest.fragments.MovieInfoFragment;
+import com.asafvaron.themoviedbtest.mvp_info.MovieInfoFragment;
 import com.asafvaron.themoviedbtest.model.Movie;
 import com.asafvaron.themoviedbtest.model.MoviesResponse;
 import com.asafvaron.themoviedbtest.rest.ApiClient;

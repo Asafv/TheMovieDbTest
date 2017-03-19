@@ -1,6 +1,7 @@
 package com.asafvaron.themoviedbtest.mvp_grid;
 
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -9,7 +10,7 @@ import android.util.Log;
 
 import com.asafvaron.themoviedbtest.Utils.Consts;
 import com.asafvaron.themoviedbtest.Utils.Prefs;
-import com.asafvaron.themoviedbtest.database.MoviesContract;
+import com.asafvaron.themoviedbtest.database.movies.MoviesContract;
 import com.asafvaron.themoviedbtest.model.Movie;
 import com.asafvaron.themoviedbtest.model.MoviesResponse;
 import com.asafvaron.themoviedbtest.rest.ApiClient;
@@ -39,6 +40,11 @@ class GridData implements LoaderManager.LoaderCallbacks<Cursor> {
     private ApiInterface mApiService;
     private String mCurrentDbType;
     private Call<MoviesResponse> call;
+    private Listener mListener;
+
+    void setListener(GridPresenter gridPresenter) {
+        mListener = (Listener) gridPresenter;
+    }
 
     interface Listener {
         void onSuccessLoad(List<Movie> movies);
@@ -51,6 +57,7 @@ class GridData implements LoaderManager.LoaderCallbacks<Cursor> {
         init();
     }
 
+    // init and load some data
     private void init() {
         mApiService = ApiClient.getClient().create(ApiInterface.class);
         mCurrentDbType = Prefs.getInstance().getString("last_db_type", MoviesContract.MovieTypes.NOW_PLAYING);
@@ -63,48 +70,17 @@ class GridData implements LoaderManager.LoaderCallbacks<Cursor> {
      * use this method to request the movies from The Movie DB api server
      * and save to data base on success
      */
-    void getMovies(String type, final Listener listener) {
+    void getMovies(String type) {
         // if already has data return it to ui
-        if (mMovieList.size() > 0) {
-            listener.onSuccessLoad(mMovieList);
+        if (type == null && mMovieList.size() > 0) {
+            Log.i(TAG, "getMovies: return from db");
+            mListener.onSuccessLoad(mMovieList);
         }
 
         // set the new DB type
         mCurrentDbType = (type == null) ? MoviesContract.MovieTypes.NOW_PLAYING : type;
-        switch (mCurrentDbType) {
-            case MoviesContract.MovieTypes.NOW_PLAYING:
-                call = mApiService.getNowPlayingMovies(ApiClient.API_KEY);
-                break;
 
-            case MoviesContract.MovieTypes.UPCOMING:
-                call = mApiService.getUpcomingMovies(ApiClient.API_KEY);
-                break;
-
-            case MoviesContract.MovieTypes.TOP_RATED:
-                call = mApiService.getTopRatedMovies(ApiClient.API_KEY);
-                break;
-
-            case MoviesContract.MovieTypes.POPULAR:
-                call = mApiService.getPopularMovies(ApiClient.API_KEY);
-                break;
-        }
-
-        Log.d(TAG, "getMovies: url: " + call.request().url());
-
-        call.enqueue(new Callback<MoviesResponse>() {
-            @Override
-            public void onResponse(Call<MoviesResponse> call, Response<MoviesResponse> response) {
-                List<Movie> movies = response.body().getResults();
-                listener.onSuccessLoad(movies);
-                saveToDb(movies);
-            }
-
-            @Override
-            public void onFailure(Call<MoviesResponse> call, Throwable t) {
-                Log.e(TAG, "onFailure: ERR: " + t.getLocalizedMessage());
-                listener.onFailedLoad(t.getLocalizedMessage());
-            }
-        });
+        mLoaderManager.restartLoader(LOADER_ID, null, this);
     }
 
     /**
@@ -114,8 +90,11 @@ class GridData implements LoaderManager.LoaderCallbacks<Cursor> {
      */
     private void saveToDb(List<Movie> movies) {
         for (Movie m : movies) {
-            getContext().getContentResolver()
+            Uri uri = getContext().getContentResolver()
                     .insert(MoviesContract.Movies.CONTENT_URI, m.getValues(mCurrentDbType));
+//                            ,MoviesContract.Movies.COLUMN_MOVIE_ID + "=" + m.getId(),
+//                            null*/);
+            Log.w(TAG, "saveToDb: uri:" + uri);
         }
         Prefs.getInstance().putString(Consts.LAST_DB_TYPE, mCurrentDbType);
         Log.d(TAG, "saveToDb: done");
@@ -134,6 +113,8 @@ class GridData implements LoaderManager.LoaderCallbacks<Cursor> {
             m.setVoteCount(c.getInt(c.getColumnIndex(MoviesContract.Movies.COLUMN_VOTE_COUNT)));
             m.setPosterPath(c.getString(c.getColumnIndex(MoviesContract.Movies.COLUMN_POSTER)));
             m.setReleaseDate(c.getString(c.getColumnIndex(MoviesContract.Movies.COLUMN_RELEASE_DATE)));
+            m.setRunTime(c.getInt(c.getColumnIndex(MoviesContract.Movies.COLUMN_RUNTIME)));
+            m.setIsInFavs(c.getInt(c.getColumnIndex(MoviesContract.Movies.COLUMN_IS_IN_FAVS)));
 //            Log.d(TAG, "getMovies: m= " + m.toString());
             movies.add(m);
         }
@@ -159,7 +140,49 @@ class GridData implements LoaderManager.LoaderCallbacks<Cursor> {
         if (c.moveToNext()) {
             mMovieList = createMoviesListFromCursor(c);
             Log.d(TAG, "mMovieList.size(): " + mMovieList.size());
+            mListener.onSuccessLoad(mMovieList);
+        } else {
+            Log.e(TAG, "no movies found in DB, fetching from api");
+            getMoviesFromApi();
         }
+    }
+
+    private void getMoviesFromApi() {
+        switch (mCurrentDbType) {
+            case MoviesContract.MovieTypes.NOW_PLAYING:
+                call = mApiService.getNowPlayingMovies(ApiClient.API_KEY);
+                break;
+
+            case MoviesContract.MovieTypes.UPCOMING:
+                call = mApiService.getUpcomingMovies(ApiClient.API_KEY);
+                break;
+
+            case MoviesContract.MovieTypes.TOP_RATED:
+                call = mApiService.getTopRatedMovies(ApiClient.API_KEY);
+                break;
+
+            case MoviesContract.MovieTypes.POPULAR:
+                call = mApiService.getPopularMovies(ApiClient.API_KEY);
+                break;
+        }
+
+//        Log.d(TAG, "getMovies: url: " + call.request().url());
+        call.enqueue(new Callback<MoviesResponse>() {
+            @Override
+            public void onResponse(Call<MoviesResponse> call, Response<MoviesResponse> response) {
+                Log.d(TAG, "onResponse: ");
+                List<Movie> movies = response.body().getResults();
+//                mListener.onSuccessLoad(movies);
+                saveToDb(movies);
+            }
+
+            @Override
+            public void onFailure(Call<MoviesResponse> call, Throwable t) {
+                Log.e(TAG, "onFailure: ERR: " + t.getLocalizedMessage());
+                mListener.onFailedLoad(t.getLocalizedMessage());
+            }
+        });
+
     }
 
     @Override

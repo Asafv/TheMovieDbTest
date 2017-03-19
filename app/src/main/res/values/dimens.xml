@@ -5,7 +5,7 @@
 
     <!-- GridItem -->
     <dimen name="grid_item_bkg_padding">5dp</dimen>
-    <dimen name="grid_item_offset">8dp</dimen>
+    <dimen name="grid_item_offset">1dp</dimen>
     <dimen name="grid_item_textView_size">20sp</dimen>
     <dimen name="grid_item_textView_padding">2dp</dimen>
 

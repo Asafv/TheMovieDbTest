@@ -19,11 +19,11 @@ public interface GridContract {
 
         void onSuccessMoviesLoaded(List<Movie> movies);
 
-        void closeInfoFragIfOpen();
-
         void onFailedLoadMovies(String error);
 
         void onMovieClicked(Movie movie);
+
+        void popInfoIfNeeded();
     }
 
     /* Model/Presenter communicator */

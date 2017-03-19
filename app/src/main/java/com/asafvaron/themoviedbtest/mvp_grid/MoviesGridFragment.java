@@ -1,5 +1,7 @@
 package com.asafvaron.themoviedbtest.mvp_grid;
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,10 +20,13 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.asafvaron.themoviedbtest.R;
+import com.asafvaron.themoviedbtest.Utils.Consts;
+import com.asafvaron.themoviedbtest.Utils.Prefs;
 import com.asafvaron.themoviedbtest.activity.MainActivity;
 import com.asafvaron.themoviedbtest.adapters.MoviesGridAdapter;
-import com.asafvaron.themoviedbtest.database.MoviesContract;
+import com.asafvaron.themoviedbtest.database.movies.MoviesContract;
 import com.asafvaron.themoviedbtest.model.Movie;
+import com.asafvaron.themoviedbtest.mvp_info.MovieInfoFragment;
 import com.asafvaron.themoviedbtest.views.GridSpacingItemDecoration;
 
 import java.util.ArrayList;
@@ -70,6 +75,9 @@ public class MoviesGridFragment extends Fragment
         View root = inflater.inflate(R.layout.movies_grid_frag_layout, container, false);
         ButterKnife.bind(this, root);
 
+        // set the color
+        mProgress.getIndeterminateDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
+
         mMoviesGridAdapter = new MoviesGridAdapter(new ArrayList<Movie>(0), this);
         mRvGridList.setAdapter(mMoviesGridAdapter);
         setupRecyclerView();
@@ -89,11 +97,15 @@ public class MoviesGridFragment extends Fragment
     @Override
     public void onResume() {
         super.onResume();
+        // get the movies from api
         mActions.loadMovies(null);
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        Log.d(TAG, "onCreateOptionsMenu: ");
+        updateTitle(Prefs.getInstance().getString(Consts.LAST_DB_TYPE, getString(R.string.action_now_playing)));
+
         inflater.inflate(R.menu.movie_grid_menu, menu);
         ActionBar ab = ((MainActivity) getActivity()).getSupportActionBar();
         if (ab != null) {
@@ -122,9 +134,16 @@ public class MoviesGridFragment extends Fragment
                 mActions.loadMovies(MoviesContract.MovieTypes.POPULAR);
                 return true;
 
+            case R.id.action_favorites:
+                loadFavoritesFragment();
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void loadFavoritesFragment() {
     }
 
     @Override
@@ -144,11 +163,6 @@ public class MoviesGridFragment extends Fragment
     }
 
     @Override
-    public void closeInfoFragIfOpen() {
-        ((MainActivity)getActivity()).closeInfoFragIfOpen();
-    }
-
-    @Override
     public void onFailedLoadMovies(String error) {
         Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
     }
@@ -157,5 +171,13 @@ public class MoviesGridFragment extends Fragment
     public void onMovieClicked(Movie movie) {
         Log.d(TAG, "onMovieClicked: " + movie.getTitle());
         ((MainActivity) getActivity()).showInfoFragment(movie);
+    }
+
+    @Override
+    public void popInfoIfNeeded() {
+        if (getActivity().getSupportFragmentManager()
+                .findFragmentByTag(MovieInfoFragment.class.getSimpleName()) != null) {
+            getActivity().onBackPressed();
+        }
     }
 }

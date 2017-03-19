@@ -1,4 +1,4 @@
-package com.asafvaron.themoviedbtest.database;
+package com.asafvaron.themoviedbtest.database.movies;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;

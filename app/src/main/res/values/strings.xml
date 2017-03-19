@@ -10,4 +10,6 @@
     <string name="gridImageDesc">Movie Poster</string>
     <string name="movie_poster_desc">Movie Poster</string>
     <string name="movie_info_ab_title">Movie Info</string>
+    <string name="action_favorites">Favorites</string>
+    <string name="fetch_duration_tmp">fetching...</string>
 </resources>

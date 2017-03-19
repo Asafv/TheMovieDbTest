@@ -2,7 +2,7 @@ package com.asafvaron.themoviedbtest.model;
 
 import android.content.ContentValues;
 
-import com.asafvaron.themoviedbtest.database.MoviesContract;
+import com.asafvaron.themoviedbtest.database.movies.MoviesContract;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -57,6 +57,12 @@ public class Movie implements Serializable{
     @SerializedName("vote_average")
     private Double voteAverage;
 
+    @SerializedName("runtime")
+    private int runTime;
+
+    // 0 (false) , 1 (true)
+    private int isInFavs;
+
     public Movie(String posterPath, boolean adult, String overview, String releaseDate,
                  List<Integer> genreIds, Integer id, String originalTitle, String originalLanguage,
                  String title, String backdropPath, Double popularity, Integer voteCount,
@@ -75,10 +81,10 @@ public class Movie implements Serializable{
         this.voteCount = voteCount;
         this.video = video;
         this.voteAverage = voteAverage;
+        this.runTime = 0;
     }
 
     public Movie() {
-
     }
 
     public String getPosterPath() {
@@ -169,6 +175,22 @@ public class Movie implements Serializable{
         this.voteAverage = voteAverage;
     }
 
+    public int getRunTime() {
+        return runTime;
+    }
+
+    public void setRunTime(int runTime) {
+        this.runTime = runTime;
+    }
+
+    public int getIsInFavs() {
+        return isInFavs;
+    }
+
+    public void setIsInFavs(int isInFavs) {
+        this.isInFavs = isInFavs;
+    }
+
     public ContentValues getValues(String dbType) {
         ContentValues values = new ContentValues();
         values.put(MoviesContract.Movies.COLUMN_MOVIE_ID, getId());
@@ -178,6 +200,8 @@ public class Movie implements Serializable{
         values.put(MoviesContract.Movies.COLUMN_POSTER, getPosterPath());
         values.put(MoviesContract.Movies.COLUMN_VOTE_AVERAGE, getVoteAverage());
         values.put(MoviesContract.Movies.COLUMN_VOTE_COUNT, getVoteCount());
+        values.put(MoviesContract.Movies.COLUMN_RUNTIME, getRunTime());
+        values.put(MoviesContract.Movies.COLUMN_IS_IN_FAVS, getIsInFavs());
         values.put(MoviesContract.Movies.COLUMN_TYPE, dbType);
         return values;
     }

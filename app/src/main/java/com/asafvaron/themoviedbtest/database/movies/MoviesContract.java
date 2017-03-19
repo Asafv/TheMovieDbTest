@@ -1,4 +1,4 @@
-package com.asafvaron.themoviedbtest.database;
+package com.asafvaron.themoviedbtest.database.movies;
 
 import android.net.Uri;
 import android.provider.BaseColumns;
@@ -32,6 +32,7 @@ public class MoviesContract {
         public static final String COLUMN_VOTE_AVERAGE = "vote_average";
         public static final String COLUMN_VOTE_COUNT = "vote_count";
         public static final String COLUMN_RUNTIME = "runtime";
+        public static final String COLUMN_IS_IN_FAVS = "is_in_favorites";
         public static final String COLUMN_TYPE = "type";
     }
 

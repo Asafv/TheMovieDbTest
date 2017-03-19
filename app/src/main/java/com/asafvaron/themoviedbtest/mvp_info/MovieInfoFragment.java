@@ -1,4 +1,4 @@
-package com.asafvaron.themoviedbtest.fragments;
+package com.asafvaron.themoviedbtest.mvp_info;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -28,10 +28,13 @@ import butterknife.ButterKnife;
 /**
  * Created by asafvaron on 20/02/2017.
  */
-// TODO: 21/02/2017 add menu - add to favs
-public class MovieInfoFragment extends Fragment {
+public class MovieInfoFragment extends Fragment
+        implements InfoContract.View {
+
     private static final String TAG = MovieInfoFragment.class.getSimpleName();
+
     private Movie mMovie;
+    private InfoContract.Actions mActions;
 
     @BindView(R.id.tv_title)
     TextView mTitle;
@@ -44,6 +47,9 @@ public class MovieInfoFragment extends Fragment {
 
     @BindView(R.id.tv_vote_average)
     TextView mVoteRate;
+
+    @BindView(R.id.tv_runtime)
+    TextView mRunTime;
 
     @BindView(R.id.iv_poster)
     ImageView mPoster;
@@ -63,6 +69,7 @@ public class MovieInfoFragment extends Fragment {
 
         if (getArguments() != null) {
             mMovie = (Movie) getArguments().getSerializable("movie");
+            mActions = new InfoPresenter(this, new InfoModel(mMovie));
         }
     }
 
@@ -72,6 +79,7 @@ public class MovieInfoFragment extends Fragment {
         View root = inflater.inflate(R.layout.movie_info_layout, container, false);
         ButterKnife.bind(this, root);
 
+        Log.e("XXX", "onCreateView: movie id: " + mMovie.getId());
         Glide.with(getActivity())
                 .load(ApiClient.IMAGE_URL + mMovie.getPosterPath())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -82,6 +90,15 @@ public class MovieInfoFragment extends Fragment {
         mReleaseDate.setText(mMovie.getReleaseDate());
         mVoteRate.setText(String.valueOf(mMovie.getVoteAverage()));
 
+        int runTime = mMovie.getRunTime();
+        if (runTime != 0) {
+            Log.d(TAG, "runtime set from Db");
+            setRunTime(runTime);
+        } else {
+            Log.w(TAG, "fetching runtime from server ");
+            mRunTime.setText(getString(R.string.fetch_duration_tmp));
+            mActions.getMovieRunTime();
+        }
         return root;
     }
 
@@ -89,6 +106,13 @@ public class MovieInfoFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         Log.d(TAG, "onCreateOptionsMenu: ");
         inflater.inflate(R.menu.info_menu, menu);
+
+        // set the Favorites menu icon
+        MenuItem favItem = menu.findItem(R.id.action_add_remove_favorite);
+        Log.d(TAG, "mMovie.getIsInFavs(): " + mMovie.getIsInFavs());
+        favItem.setIcon((mMovie.getIsInFavs() == 1)
+                ? R.drawable.ic_favorite
+                : R.drawable.ic_favorite_border_black_24dp);
 
         ActionBar ab = ((MainActivity) getActivity()).getSupportActionBar();
         if (ab != null) {
@@ -107,13 +131,43 @@ public class MovieInfoFragment extends Fragment {
                 Log.d(TAG, "android.R.id.home");
                 getActivity().onBackPressed();
                 return true;
-            case R.id.action_favorite:
+            case R.id.action_add_remove_favorite:
                 Log.d(TAG, "action_favorite");
-                Toast.makeText(getContext(), "Add to favorites", Toast.LENGTH_SHORT).show();
+                addOrRemoveToFavs(item);
                 return true;
 
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    private void addOrRemoveToFavs(MenuItem item) {
+        if (mMovie.getIsInFavs() == 1) {
+            mMovie.setIsInFavs(0);
+            item.setIcon(R.drawable.ic_favorite_border_black_24dp);
+        } else {
+            mMovie.setIsInFavs(1);
+            item.setIcon(R.drawable.ic_favorite);
+        }
+        // update the DB after changes
+        mActions.updateDb(getContext(), mMovie);
+    }
+
+    private void setRunTime(int runTime) {
+        mRunTime.setText(String.format("%d min", runTime));
+    }
+
+    @Override
+    public void setMovieRunTime(int runTime) {
+        setRunTime(runTime);
+        mMovie.setRunTime(runTime);
+        mActions.updateDb(getContext(), mMovie);
+    }
+
+    @Override
+    public void failedToGetMovieRunTime(String err) {
+        mRunTime.setText("N/A");
+        Toast.makeText(getContext(), err, Toast.LENGTH_SHORT).show();
+    }
+
 }

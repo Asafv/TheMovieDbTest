@@ -1,5 +1,6 @@
 package com.asafvaron.themoviedbtest.rest;
 
+import com.asafvaron.themoviedbtest.model.Movie;
 import com.asafvaron.themoviedbtest.model.MoviesResponse;
 
 import retrofit2.Call;
@@ -25,7 +26,7 @@ public interface ApiInterface {
     Call<MoviesResponse> getUpcomingMovies(@Query("api_key") String apiKey);
 
     @GET("movie/{id}")
-    Call<MoviesResponse> getMovieDetails(
+    Call<Movie> getMovieDetails(
             @Path("id") int movieId,
             @Query("api_key") String apiKey
     );

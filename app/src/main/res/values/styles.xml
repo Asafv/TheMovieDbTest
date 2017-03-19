@@ -9,10 +9,10 @@
     </style>
 
     <style name="GridItemBkgStyle">
-        <item name="android:background">@color/light_gray</item>
+        <!--<item name="android:background">@color/light_gray</item>-->
         <item name="android:gravity">center</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:padding">@dimen/grid_item_bkg_padding</item>
+        <!--<item name="android:padding">@dimen/grid_item_bkg_padding</item>-->
     </style>
 
     <style name="GridItemTextViewStyle">
@@ -25,8 +25,9 @@
     </style>
 
     <style name="GridItemImageViewStyle">
-        <item name="android:layout_width">185dp</item>
-        <item name="android:layout_height">220dp</item>
+        <item name="android:layout_width">200dp</item>
+        <item name="android:layout_height">240dp</item>
+        <item name="android:contentDescription">@string/movie_poster_desc</item>
     </style>
 
     <style name="MovieInfoImageStyle">
@@ -53,6 +54,7 @@
         <item name="android:layout_alignParentEnd">true</item>
         <item name="android:layout_alignParentRight">true</item>
         <item name="android:maxLines">2</item>
+        <item name="android:layout_marginTop">25dp</item>
         <item name="android:layout_toEndOf">@+id/iv_poster</item>
         <item name="android:layout_toRightOf">@+id/iv_poster</item>
         <item name="android:layout_margin">@dimen/info_textView_margin</item>
@@ -60,10 +62,10 @@
         <item name="android:textSize">@dimen/info_textView_size</item>
     </style>
 
-
     <style name="InfoTextViewOverviewStyle">
         <item name="android:layout_marginTop">@dimen/info_textView_overview_marginTop</item>
         <item name="android:textSize">@dimen/info_textView_size</item>
+        <item name="android:textColor">@color/dark_grey</item>
     </style>
 
     <style name="Toolbar" parent="ThemeOverlay.AppCompat.ActionBar">
@@ -91,6 +93,20 @@
         <item name="android:layout_width">280dp</item>
         <item name="android:layout_height">180dp</item>
         <item name="android:scaleType">fitXY</item>
+    </style>
+
+    <style name="InfoTvVoteStyle">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:drawableLeft">@drawable/ic_stars</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:layout_marginTop">25dp</item>
+        <item name="android:layout_toEndOf">@+id/iv_poster</item>
+        <item name="android:layout_toRightOf">@+id/iv_poster</item>
+        <item name="android:layout_margin">@dimen/info_textView_margin</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">@dimen/info_textView_size</item>
     </style>
 
 </resources>

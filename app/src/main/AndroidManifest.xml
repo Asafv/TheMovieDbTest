@@ -21,7 +21,7 @@
 
         <!-- movies data base provider -->
         <provider
-            android:name=".database.MoviesContentProvider"
+            android:name=".database.movies.MoviesContentProvider"
             android:authorities="com.asafvaron.themoviedbtest.provider"
             android:exported="false" />
     </application>

@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.asafvaron.themoviedbtest.MyApp;
 import com.asafvaron.themoviedbtest.R;
@@ -50,11 +49,11 @@ public class MoviesGridAdapter extends RecyclerView.Adapter<MoviesGridAdapter.Mo
         final Movie movie = mData.get(position);
 
         // set the title
-        String title = movie.getTitle();
-        if (title == null || title.isEmpty()) {
-            title = movie.getOriginalTitle();
-        }
-        holder.tv_title.setText(title);
+//        String title = movie.getTitle();
+//        if (title == null || title.isEmpty()) {
+//            title = movie.getOriginalTitle();
+//        }
+//        holder.tv_title.setText(title);
 
         // set the image
         Glide.with(MyApp.getContext())
@@ -79,19 +78,23 @@ public class MoviesGridAdapter extends RecyclerView.Adapter<MoviesGridAdapter.Mo
 
     public void setData(List<Movie> movies) {
         // update only if there is a change in data
-        if (mData != movies) {
+        // FIXME: 19/03/2017 update only if there is new data
+        if (!mData.containsAll(movies)) {
             mData = movies;
             notifyDataSetChanged();
+            Log.d(TAG, "setData: new data was set");
+        } else {
+            Log.w(TAG, "setData: no changes - same as before");
         }
     }
 
     class MovieViewHolder extends RecyclerView.ViewHolder {
-        TextView tv_title;
+//        TextView tv_title;
         ImageView iv_poster;
 
         MovieViewHolder(View itemView) {
             super(itemView);
-            tv_title = (TextView) itemView.findViewById(R.id.tv_movie_title);
+//            tv_title = (TextView) itemView.findViewById(R.id.tv_movie_title);
             iv_poster = (ImageView) itemView.findViewById(R.id.iv_movie_poster);
         }
     }

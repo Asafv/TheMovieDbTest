@@ -1,6 +1,6 @@
 package com.asafvaron.themoviedbtest;
 
-import com.asafvaron.themoviedbtest.fragments.MovieInfoFragment;
+import com.asafvaron.themoviedbtest.mvp_info.MovieInfoFragment;
 import com.asafvaron.themoviedbtest.model.Movie;
 import com.asafvaron.themoviedbtest.mvp_grid.MoviesGridFragment;
 import com.asafvaron.themoviedbtest.rest.ApiClient;
