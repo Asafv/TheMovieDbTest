@@ -16,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -168,9 +169,9 @@ public class MoviesGridFragment extends Fragment
     }
 
     @Override
-    public void onMovieClicked(Movie movie) {
+    public void onMovieClicked(ImageView imgView, Movie movie) {
         Log.d(TAG, "onMovieClicked: " + movie.getTitle());
-        ((MainActivity) getActivity()).showInfoFragment(movie);
+        ((MainActivity) getActivity()).showInfoFragment(imgView, movie);
     }
 
     @Override

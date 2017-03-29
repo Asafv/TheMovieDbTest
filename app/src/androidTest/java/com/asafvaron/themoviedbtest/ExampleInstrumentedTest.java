@@ -54,7 +54,7 @@ public class ExampleInstrumentedTest {
         // click on one of the items and make sure info fragment is displayed
 //        onView(withId(R.id.rv_grid_list)).perform(click());
 
-        mMainActivity.showInfoFragment(movie);
+        mMainActivity.showInfoFragment(imgView, movie);
 
         // check action bar title has changed
         onView(withText(R.string.movie_info_ab_title)).check(matches(isDisplayed()));

@@ -3,6 +3,7 @@ package com.asafvaron.themoviedbtest.mvp_info;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -78,6 +79,8 @@ public class MovieInfoFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.movie_info_layout, container, false);
         ButterKnife.bind(this, root);
+
+        ViewCompat.setTransitionName(mPoster, "2");
 
         Log.e("XXX", "onCreateView: movie id: " + mMovie.getId());
         Glide.with(getActivity())

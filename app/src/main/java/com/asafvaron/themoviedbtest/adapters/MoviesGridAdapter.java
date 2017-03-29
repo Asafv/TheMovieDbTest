@@ -1,5 +1,6 @@
 package com.asafvaron.themoviedbtest.adapters;
 
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -55,18 +56,22 @@ public class MoviesGridAdapter extends RecyclerView.Adapter<MoviesGridAdapter.Mo
 //        }
 //        holder.tv_title.setText(title);
 
+
+        final ImageView imgView = holder.iv_poster;
+        ViewCompat.setTransitionName(imgView, "1");
+
         // set the image
         Glide.with(MyApp.getContext())
                 .load(ApiClient.IMAGE_URL + movie.getPosterPath())
                 .placeholder(android.R.drawable.ic_menu_upload)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .into(holder.iv_poster);
+                .into(imgView);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: movie: " + movie);
-                mListener.onMovieClicked(movie);
+                mListener.onMovieClicked(imgView, movie);
             }
         });
     }
@@ -95,7 +100,7 @@ public class MoviesGridAdapter extends RecyclerView.Adapter<MoviesGridAdapter.Mo
         MovieViewHolder(View itemView) {
             super(itemView);
 //            tv_title = (TextView) itemView.findViewById(R.id.tv_movie_title);
-            iv_poster = (ImageView) itemView.findViewById(R.id.iv_movie_poster);
+            iv_poster = (ImageView) itemView.findViewById(R.id.iv_poster);
         }
     }
 }

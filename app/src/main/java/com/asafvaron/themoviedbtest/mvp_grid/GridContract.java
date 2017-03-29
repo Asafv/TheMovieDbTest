@@ -1,5 +1,7 @@
 package com.asafvaron.themoviedbtest.mvp_grid;
 
+import android.widget.ImageView;
+
 import com.asafvaron.themoviedbtest.model.Movie;
 
 import java.util.List;
@@ -21,7 +23,7 @@ public interface GridContract {
 
         void onFailedLoadMovies(String error);
 
-        void onMovieClicked(Movie movie);
+        void onMovieClicked(ImageView imgView, Movie movie);
 
         void popInfoIfNeeded();
     }

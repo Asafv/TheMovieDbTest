@@ -1,17 +1,23 @@
 package com.asafvaron.themoviedbtest.activity;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.transition.AutoTransition;
+import android.transition.Fade;
+import android.transition.TransitionSet;
+import android.widget.ImageView;
 
 import com.asafvaron.themoviedbtest.R;
 import com.asafvaron.themoviedbtest.Utils.Consts;
 import com.asafvaron.themoviedbtest.Utils.Prefs;
-import com.asafvaron.themoviedbtest.mvp_info.MovieInfoFragment;
 import com.asafvaron.themoviedbtest.model.Movie;
 import com.asafvaron.themoviedbtest.movie_snapping.SnappingFragment;
 import com.asafvaron.themoviedbtest.mvp_grid.MoviesGridFragment;
+import com.asafvaron.themoviedbtest.mvp_info.MovieInfoFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,9 +55,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loadMovieGridFragment() {
-        getSupportFragmentManager().beginTransaction()
-                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-                .replace(R.id.frags_container, MoviesGridFragment.newInstance(), MoviesGridFragment.class.getSimpleName())
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+
+        MoviesGridFragment moviesGridFragment = MoviesGridFragment.newInstance();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            // Setup exit transition on first fragment
+            moviesGridFragment.setSharedElementReturnTransition(new DetailsTransition());
+            moviesGridFragment.setExitTransition(new Fade());
+        } else {
+            ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+        }
+        ft.replace(R.id.frags_container, moviesGridFragment, MoviesGridFragment.class.getSimpleName())
                 .commit();
     }
 
@@ -62,13 +76,35 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
-    public void showInfoFragment(Movie movie) {
-        //XXX Yossi how to stop fragments jump-to-last-position when using replace instead of add
-        getSupportFragmentManager().beginTransaction()
-                .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-                .add(R.id.frags_container,
-                        MovieInfoFragment.newInstance(movie), MovieInfoFragment.class.getSimpleName())
+    public void showInfoFragment(ImageView imgView, Movie movie) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        MovieInfoFragment movieInfoFragment = MovieInfoFragment.newInstance(movie);
+
+        // Note that we need the API version check here because the actual transition classes (e.g. Fade)
+        // are not in the support library and are only available in API 21+. The methods we are calling on the Fragment
+        // ARE available in the support library (though they don't do anything on API < 21)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+            // setup enter transition on info fragment
+            movieInfoFragment.setSharedElementEnterTransition(new DetailsTransition());
+            movieInfoFragment.setEnterTransition(new Fade());
+            ft.addSharedElement(imgView, "movieClickTransition");
+        } else {
+            // set default animation for lower api
+            ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+        }
+        ft.replace(R.id.frags_container, movieInfoFragment)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private class DetailsTransition extends TransitionSet {
+        DetailsTransition() {
+            setOrdering(ORDERING_TOGETHER);
+            addTransition(new AutoTransition()).
+                    addTransition(new AutoTransition()).
+                    addTransition(new AutoTransition());
+        }
     }
 }
