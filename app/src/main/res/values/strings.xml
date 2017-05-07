@@ -13,4 +13,6 @@
     <string name="action_favorites">Favorites</string>
     <string name="fetch_duration_tmp">fetching...</string>
     <string name="action_snap_view">Snap View</string>
+    <string name="favorites_title">Favorites</string>
+    <string name="no_favorites_found">No Favorites saved</string>
 </resources>

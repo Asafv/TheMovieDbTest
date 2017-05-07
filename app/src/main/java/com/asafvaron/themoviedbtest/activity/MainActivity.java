@@ -10,6 +10,7 @@ import android.transition.ChangeBounds;
 import android.transition.ChangeImageTransform;
 import android.transition.ChangeTransform;
 import android.transition.TransitionSet;
+import android.view.Menu;
 import android.widget.ImageView;
 
 import com.asafvaron.themoviedbtest.R;
@@ -53,6 +54,12 @@ public class MainActivity extends AppCompatActivity {
                 loadSnappingFragment();
                 break;
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     public void loadMovieGridFragment() {

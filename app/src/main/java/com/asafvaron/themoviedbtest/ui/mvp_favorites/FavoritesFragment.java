@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.asafvaron.themoviedbtest.R;
 import com.asafvaron.themoviedbtest.activity.MainActivity;
+import com.asafvaron.themoviedbtest.decorations.GridSpacingItemDecoration;
 import com.asafvaron.themoviedbtest.model.Movie;
 
 import java.util.ArrayList;
@@ -120,6 +121,7 @@ public class FavoritesFragment extends Fragment
 
     @Override
     public void onMovieClicked(Movie m) {
-        ((MainActivity) getActivity()).showInfoFragment(m);
+        Log.d(TAG, "onMovieClicked: " + m.getTitle());
+//        ((MainActivity) getActivity()).showInfoFragment(m);
     }
 }
