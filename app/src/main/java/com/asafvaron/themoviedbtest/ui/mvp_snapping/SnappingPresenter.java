@@ -6,12 +6,9 @@ import android.util.Log;
 
 import com.asafvaron.themoviedbtest.MyApp;
 import com.asafvaron.themoviedbtest.data.api.MoviesService;
+import com.asafvaron.themoviedbtest.data.io.MoviesResponse;
 import com.asafvaron.themoviedbtest.data.sql_db.MoviesDbContract;
-import com.asafvaron.themoviedbtest.model.database.MoviesContract;
 import com.asafvaron.themoviedbtest.model.Movie;
-import com.asafvaron.themoviedbtest.model.MoviesResponse;
-import com.asafvaron.themoviedbtest.rest.ApiClient;
-import com.asafvaron.themoviedbtest.rest.ApiInterface;
 
 import java.util.List;
 
@@ -49,11 +46,11 @@ public class SnappingPresenter implements SnappingContract.UserActions {
                 .enqueue(new Callback<MoviesResponse>() {
                     @Override
                     public void onResponse(Call<MoviesResponse> call, Response<MoviesResponse> response) {
-                        List<Movie> movies = response.body().getResults();
+                        List<Movie> movies = response.body().results;
                         if (movies != null) {
                             Log.d(TAG, "onResponse: loading popular list");
                             mSnappingView.onPopularLoaded(movies);
-                            saveToDb(movies, MoviesContract.MovieTypes.POPULAR);
+                            saveToDb(movies, MoviesDbContract.MovieTypes.POPULAR);
                         }
                     }
 
@@ -70,7 +67,7 @@ public class SnappingPresenter implements SnappingContract.UserActions {
                 .enqueue(new Callback<MoviesResponse>() {
                     @Override
                     public void onResponse(Call<MoviesResponse> call, Response<MoviesResponse> response) {
-                        List<Movie> movies = response.body().getResults();
+                        List<Movie> movies = response.body().results;
                         if (movies != null) {
                             Log.d(TAG, "onResponse: loading upcoming list");
                             mSnappingView.onUpcomingLoaded(movies);
@@ -91,7 +88,7 @@ public class SnappingPresenter implements SnappingContract.UserActions {
                 .enqueue(new Callback<MoviesResponse>() {
                     @Override
                     public void onResponse(Call<MoviesResponse> call, Response<MoviesResponse> response) {
-                        List<Movie> movies = response.body().getResults();
+                        List<Movie> movies = response.body().results;
                         if (movies != null) {
                             Log.d(TAG, "onResponse: loading top rated list");
                             mSnappingView.onTopRatedLoaded(movies);
@@ -112,7 +109,7 @@ public class SnappingPresenter implements SnappingContract.UserActions {
                 .enqueue(new Callback<MoviesResponse>() {
                     @Override
                     public void onResponse(Call<MoviesResponse> call, Response<MoviesResponse> response) {
-                        List<Movie> movies = response.body().getResults();
+                        List<Movie> movies = response.body().results;
                         if (movies != null) {
                             Log.d(TAG, "onResponse: loading now playing list");
                             mSnappingView.onNowPlayingLoaded(movies);

@@ -4,9 +4,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,11 +17,8 @@ import android.widget.ProgressBar;
 import com.asafvaron.themoviedbtest.R;
 import com.asafvaron.themoviedbtest.activity.MainActivity;
 import com.asafvaron.themoviedbtest.data.api.MoviesApi;
-import com.asafvaron.themoviedbtest.mvp_movie_info.MovieInfoFragment;
 import com.asafvaron.themoviedbtest.model.Movie;
-import com.asafvaron.themoviedbtest.rest.ApiClient;
-import com.asafvaron.themoviedbtest.rest.ApiInterface;
-import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper;
+import com.asafvaron.themoviedbtest.ui.movie_details.MovieDetailFragment;
 
 import java.util.List;
 
@@ -110,7 +107,8 @@ public class SnappingFragment extends Fragment
 
     private void setupRecyclerViews() {
         // create the gravity snap helper
-        SnapHelper snapHelper = new GravitySnapHelper(Gravity.START);
+//        SnapHelper snapHelper = new GravitySnapHelper(Gravity.START);
+        SnapHelper snapHelper = new LinearSnapHelper();
 
         // attach to recyclerViews
         snapHelper.attachToRecyclerView(mRvNowPlayingList);
@@ -176,7 +174,7 @@ public class SnappingFragment extends Fragment
                 .beginTransaction()
                 .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
                 .add(R.id.frags_container,
-                        MovieInfoFragment.newInstance(movie), MovieInfoFragment.class.getSimpleName())
+                        MovieDetailFragment.newInstance(movie), MovieDetailFragment.class.getSimpleName())
                 .addToBackStack(null)
                 .commit();
     }

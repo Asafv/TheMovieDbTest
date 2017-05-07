@@ -11,7 +11,6 @@ import android.util.Log;
 
 import com.asafvaron.themoviedbtest.MyApp;
 import com.asafvaron.themoviedbtest.data.sql_db.MoviesDbContract;
-import com.asafvaron.themoviedbtest.model.database.MoviesContract;
 import com.asafvaron.themoviedbtest.model.Movie;
 
 import java.util.ArrayList;
@@ -54,14 +53,14 @@ class FavoritesPresenter implements FavoritesContract.UserActions,
         Log.d(TAG, "onLoadFinished: ");
         while (c.moveToNext()) {
             Movie m = new Movie();
-            m.setId(c.getInt(c.getColumnIndex(MoviesContract.Favorites.COLUMN_MOVIE_ID)));
-            m.setTitle(c.getString(c.getColumnIndex(MoviesContract.Favorites.COLUMN_TITLE)));
-            m.setOriginalTitle(c.getString(c.getColumnIndex(MoviesContract.Favorites.COLUMN_ORIGINAL_TITLE)));
-            m.setOverview(c.getString(c.getColumnIndex(MoviesContract.Favorites.COLUMN_OVERVIEW)));
-            m.setVoteAverage(c.getDouble(c.getColumnIndex(MoviesContract.Favorites.COLUMN_VOTE_AVERAGE)));
-            m.setVoteCount(c.getInt(c.getColumnIndex(MoviesContract.Favorites.COLUMN_VOTE_COUNT)));
-            m.setPosterPath(c.getString(c.getColumnIndex(MoviesContract.Favorites.COLUMN_POSTER)));
-            m.setReleaseDate(c.getString(c.getColumnIndex(MoviesContract.Favorites.COLUMN_RELEASE_DATE)));
+            m.setId(c.getInt(c.getColumnIndex(MoviesDbContract.Favorites.COLUMN_MOVIE_ID)));
+            m.setTitle(c.getString(c.getColumnIndex(MoviesDbContract.Favorites.COLUMN_TITLE)));
+            m.setOriginalTitle(c.getString(c.getColumnIndex(MoviesDbContract.Favorites.COLUMN_ORIGINAL_TITLE)));
+            m.setOverview(c.getString(c.getColumnIndex(MoviesDbContract.Favorites.COLUMN_OVERVIEW)));
+            m.setVoteAverage(c.getDouble(c.getColumnIndex(MoviesDbContract.Favorites.COLUMN_VOTE_AVERAGE)));
+            m.setVoteCount(c.getInt(c.getColumnIndex(MoviesDbContract.Favorites.COLUMN_VOTE_COUNT)));
+            m.setPosterPath(c.getString(c.getColumnIndex(MoviesDbContract.Favorites.COLUMN_POSTER)));
+            m.setReleaseDate(c.getString(c.getColumnIndex(MoviesDbContract.Favorites.COLUMN_RELEASE_DATE)));
             // create the list
             mFavsList.add(m);
         }

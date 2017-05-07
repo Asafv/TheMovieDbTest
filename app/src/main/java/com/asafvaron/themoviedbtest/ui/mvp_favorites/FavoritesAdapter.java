@@ -62,12 +62,7 @@ class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.ViewHolder>
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(holder.iv_poster);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onMovieClicked(m);
-            }
-        });
+        holder.itemView.setOnClickListener(v -> mListener.onMovieClicked(m));
     }
 
     @Override
