@@ -1,4 +1,4 @@
-package com.asafvaron.themoviedbtest.database;
+package com.asafvaron.themoviedbtest.data.sql_db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,9 +8,9 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Created by asafvaron on 19/02/2017.
  */
 public class MoviesDbHelper extends SQLiteOpenHelper {
-    private static final String TAG = MoviesDbHelper.class.getSimpleName();
+    private static final String TAG = "MoviesDbHelper";
 
-    public static final int DB_VERSION = 1;
+    public static final int DB_VERSION = 6;
     public static final String DB_NAME = "theMoviesDbTest.db";
 
     // create table
@@ -22,9 +22,12 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
                     MoviesContract.Movies.COLUMN_ORIGINAL_TITLE + " TEXT," +
                     MoviesContract.Movies.COLUMN_RELEASE_DATE + " TEXT," +
                     MoviesContract.Movies.COLUMN_OVERVIEW + " TEXT," +
-                    MoviesContract.Movies.COLUMN_POSTER + " BLOB," +
+                    MoviesContract.Movies.COLUMN_POSTER + " TEXT," +
+                    MoviesContract.Movies.COLUMN_TYPE + " TEXT," +
+//                    MoviesContract.Movies.COLUMN_POSTER + " BLOB," +
                     MoviesContract.Movies.COLUMN_VOTE_AVERAGE + " REAL," +
                     MoviesContract.Movies.COLUMN_VOTE_COUNT + " REAL," +
+                    MoviesContract.Movies.COLUMN_IS_IN_FAVS + " REAL," +
                     MoviesContract.Movies.COLUMN_RUNTIME + " REAL)";
 
     // delete table

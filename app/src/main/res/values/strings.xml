@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">TheMovieDbTest</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_favorite">Add to Favorites</string>
+    <string name="action_top_rated">Top Rated</string>
+    <string name="action_popular">Popular</string>
+    <string name="action_upcoming">Upcoming</string>
+    <string name="action_now_playing">Now Playing</string>
+    <string name="action_recommended">Recommended</string>
+    <string name="gridImageDesc">Movie Poster</string>
+    <string name="movie_poster_desc">Movie Poster</string>
+    <string name="movie_info_ab_title">Movie Info</string>
+    <string name="action_favorites">Favorites</string>
+    <string name="fetch_duration_tmp">fetching...</string>
 </resources>

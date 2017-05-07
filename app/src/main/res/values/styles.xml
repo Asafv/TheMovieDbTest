@@ -1,11 +1,127 @@
 <resources>
 
+    <!--<style name="BaseAppTheme" parent="android:Theme.Material">-->
+        <!--&lt;!&ndash; enable window content transitions &ndash;&gt;-->
+        <!--<item name="android:windowActivityTransitions">true</item>-->
+
+        <!--&lt;!&ndash; specify enter and exit transitions &ndash;&gt;-->
+        <!--<item name="android:windowEnterTransition">@transition/explode</item>-->
+        <!--<item name="android:windowExitTransition">@transition/explode</item>-->
+
+        <!--&lt;!&ndash; specify shared element transitions &ndash;&gt;-->
+        <!--<item name="android:windowSharedElementEnterTransition">-->
+            <!--@transition/change_image_transform</item>-->
+        <!--<item name="android:windowSharedElementExitTransition">-->
+            <!--@transition/change_image_transform</item>-->
+    <!--</style>-->
+
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="GridItemBkgStyle">
+        <!--<item name="android:background">@color/light_gray</item>-->
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">vertical</item>
+        <!--<item name="android:padding">@dimen/grid_item_bkg_padding</item>-->
+    </style>
+
+    <style name="GridItemTextViewStyle">
+        <item name="android:layout_above">@+id/iv_poster</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:padding">@dimen/grid_item_textView_padding</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">@dimen/grid_item_textView_size</item>
+    </style>
+
+    <style name="GridItemImageViewStyle">
+        <item name="android:layout_width">200dp</item>
+        <item name="android:layout_height">240dp</item>
+        <item name="android:contentDescription">@string/movie_poster_desc</item>
+    </style>
+
+    <style name="MovieInfoImageStyle">
+        <item name="android:layout_width">220dp</item>
+        <item name="android:layout_height">280dp</item>
+        <item name="android:cropToPadding">true</item>
+        <item name="android:layout_below">@+id/tv_title</item>
+        <item name="android:layout_alignParentStart">true</item>
+        <item name="android:layout_alignParentLeft">true</item>
+    </style>
+
+    <style name="InfoTextViewTitleStyle">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_margin">@dimen/info_textView_margin</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">@dimen/info_textView_title_size</item>
+    </style>
+
+    <style name="InfoTextViewStyle">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:layout_marginTop">25dp</item>
+        <item name="android:layout_toEndOf">@+id/iv_poster</item>
+        <item name="android:layout_toRightOf">@+id/iv_poster</item>
+        <item name="android:layout_margin">@dimen/info_textView_margin</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">@dimen/info_textView_size</item>
+    </style>
+
+    <style name="InfoTextViewOverviewStyle">
+        <item name="android:layout_marginTop">@dimen/info_textView_overview_marginTop</item>
+        <item name="android:textSize">@dimen/info_textView_size</item>
+        <item name="android:textColor">@color/dark_grey</item>
+    </style>
+
+    <style name="Toolbar" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:textColorPrimary">@android:color/white</item>
+    </style>
+
+    <style name="SnapTextViewRatingStyle">
+        <item name="android:textColor">@android:color/darker_gray</item>
+        <item name="android:layout_marginLeft">4dp</item>
+        <item name="android:layout_marginStart">4dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="SnapTextViewTitleStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">55dp</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="SnapVerticalImageViewStyle">
+        <item name="android:layout_width">280dp</item>
+        <item name="android:layout_height">180dp</item>
+        <item name="android:scaleType">fitXY</item>
+    </style>
+
+    <style name="InfoTvVoteStyle">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:drawableLeft">@drawable/ic_stars</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:layout_marginTop">25dp</item>
+        <item name="android:layout_toEndOf">@+id/iv_poster</item>
+        <item name="android:layout_toRightOf">@+id/iv_poster</item>
+        <item name="android:layout_margin">@dimen/info_textView_margin</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">@dimen/info_textView_size</item>
     </style>
 
 </resources>

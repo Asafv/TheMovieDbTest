@@ -1,4 +1,4 @@
-package com.asafvaron.themoviedbtest.database;
+package com.asafvaron.themoviedbtest.data.sql_db;
 
 import android.net.Uri;
 import android.provider.BaseColumns;
@@ -9,9 +9,6 @@ import android.provider.BaseColumns;
 
 public class MoviesContract {
 
-    // table name
-    public static final String TABLE_NAME = "movies";
-
     //the provider's authority
     public final static String AUTHORITY = "com.asafvaron.themoviedbtest.provider";
 
@@ -19,8 +16,9 @@ public class MoviesContract {
     private MoviesContract() {
     }
 
-    // movie table
     public static class Movies implements BaseColumns {
+        // table name
+        public static final String TABLE_NAME = "movies_table";
 
         //uri
         public final static Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + TABLE_NAME);
@@ -34,5 +32,14 @@ public class MoviesContract {
         public static final String COLUMN_VOTE_AVERAGE = "vote_average";
         public static final String COLUMN_VOTE_COUNT = "vote_count";
         public static final String COLUMN_RUNTIME = "runtime";
+        public static final String COLUMN_IS_IN_FAVS = "is_in_favorites";
+        public static final String COLUMN_TYPE = "type";
+    }
+
+    public class MovieTypes {
+        public static final String NOW_PLAYING = "Now Playing";
+        public static final String POPULAR = "Popular";
+        public static final String TOP_RATED = "Top Rated";
+        public static final String UPCOMING = "Upcoming";
     }
 }
