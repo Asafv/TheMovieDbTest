@@ -65,7 +65,7 @@ public class FavoritesFragment extends Fragment
         ButterKnife.bind(this, root);
 
         // set recyclerView adapter
-        mFavsAdapter = new FavoritesAdapter(new ArrayList<Movie>(0), this);
+        mFavsAdapter = new FavoritesAdapter(new ArrayList<>(0), this);
         setupRecyclerView();
         mRvFavsList.setAdapter(mFavsAdapter);
 

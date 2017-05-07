@@ -38,6 +38,21 @@ class FavoritesPresenter implements FavoritesContract.UserActions,
         mFavsView = checkNotNull(favsView, "Favorites View cannot be null!");
     }
 
+    @Override
+    public void loadFavorites() {
+        // update the progress
+        mFavsView.updateProgress(true);
+
+        // data already exists return to ui
+        if (mFavsList.size() > 0) {
+            mFavsView.updateProgress(false);
+            mFavsView.onLoadComplete(mFavsList);
+        } else {
+            // no data - fetch from db
+            mFavsList = new ArrayList<>();
+            mLoaderManager.initLoader(FAVS_LOADER_ID, null, this);
+        }
+    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -73,21 +88,5 @@ class FavoritesPresenter implements FavoritesContract.UserActions,
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         // no - op
-    }
-
-    @Override
-    public void loadFavorites() {
-        // update the progress
-        mFavsView.updateProgress(true);
-
-        // data already exists return to ui
-        if (mFavsList.size() > 0) {
-            mFavsView.updateProgress(false);
-            mFavsView.onLoadComplete(mFavsList);
-        } else {
-            // no data - fetch from db
-            mFavsList = new ArrayList<>();
-            mLoaderManager.initLoader(FAVS_LOADER_ID, null, this);
-        }
     }
 }

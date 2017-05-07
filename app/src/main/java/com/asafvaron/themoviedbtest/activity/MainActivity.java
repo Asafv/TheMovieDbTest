@@ -20,6 +20,7 @@ import com.asafvaron.themoviedbtest.Utils.Prefs;
 import com.asafvaron.themoviedbtest.model.Movie;
 import com.asafvaron.themoviedbtest.ui.movie_details.MovieDetailFragment;
 import com.asafvaron.themoviedbtest.ui.movies.MoviesFragment;
+import com.asafvaron.themoviedbtest.ui.mvp_favorites.FavoritesFragment;
 import com.asafvaron.themoviedbtest.ui.mvp_snapping.SnappingFragment;
 
 import butterknife.BindView;
@@ -72,6 +73,9 @@ public class MainActivity extends AppCompatActivity {
                 if (title.equalsIgnoreCase(getString(R.string.action_snap_view))) {
                     item.setTitle(getString(R.string.action_list_view));
                     loadSnappingFragment();
+                } else {
+                    item.setTitle(getString(R.string.action_snap_view));
+                    loadMovieGridFragment();
                 }
                 return true;
 
@@ -81,6 +85,13 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void loadFavoritesFragment() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.frags_container, FavoritesFragment.newInstance(), FavoritesFragment.class.getSimpleName())
+                .addToBackStack(null)
+                .commit();
     }
 
     public void loadMovieGridFragment() {
