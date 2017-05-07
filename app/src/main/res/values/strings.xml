@@ -12,4 +12,5 @@
     <string name="movie_info_ab_title">Movie Info</string>
     <string name="action_favorites">Favorites</string>
     <string name="fetch_duration_tmp">fetching...</string>
+    <string name="action_snap_view">Snap View</string>
 </resources>
