@@ -67,17 +67,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_change_views:
-                String title = item.getTitle().toString();
-                // change to snap view
-                if (title.equalsIgnoreCase(getString(R.string.action_snap_view))) {
-                    item.setTitle(getString(R.string.action_list_view));
-                    loadSnappingFragment();
-                } else {
-                    item.setTitle(getString(R.string.action_snap_view));
-                    loadMovieGridFragment();
-                }
-                return true;
+//            case R.id.action_change_views:
+//                String title = item.getTitle().toString();
+//                // change to snap view
+//                if (title.equalsIgnoreCase(getString(R.string.action_snap_view))) {
+//                    item.setTitle(getString(R.string.action_list_view));
+//                    loadSnappingFragment();
+//                } else {
+//                    item.setTitle(getString(R.string.action_snap_view));
+//                    loadMovieGridFragment();
+//                }
+//                return true;
 
             case R.id.action_favorites:
                 loadFavoritesFragment();
