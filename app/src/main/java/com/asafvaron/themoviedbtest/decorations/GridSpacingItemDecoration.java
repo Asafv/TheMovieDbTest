@@ -1,4 +1,4 @@
-package com.asafvaron.themoviedbtest.views;
+package com.asafvaron.themoviedbtest.decorations;
 
 import android.content.Context;
 import android.graphics.Rect;
@@ -11,7 +11,7 @@ import android.view.View;
  * Created by asafvaron on 20/02/2017.
  */
 public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
-    private static final String TAG = GridSpacingItemDecoration.class.getSimpleName();
+    private static final String TAG = "GridSpacingItemDecorati";
 
     private int mItemOffset;
 

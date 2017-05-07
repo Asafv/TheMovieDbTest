@@ -1,4 +1,4 @@
-package com.asafvaron.themoviedbtest.database.movies;
+package com.asafvaron.themoviedbtest.data.sql_db;
 
 import android.net.Uri;
 import android.provider.BaseColumns;

@@ -1,4 +1,4 @@
-package com.asafvaron.themoviedbtest.database.movies;
+package com.asafvaron.themoviedbtest.data.sql_db;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;
@@ -15,7 +15,7 @@ import java.util.List;
  * Created by asafvaron on 19/02/2017.
  */
 public class MoviesContentProvider extends ContentProvider {
-    private static final String TAG = MoviesContentProvider.class.getSimpleName();
+    private static final String TAG = "MoviesContentProvider";
 
     private MoviesDbHelper moviesDbHelper;
 

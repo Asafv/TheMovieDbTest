@@ -1,4 +1,4 @@
-package com.asafvaron.themoviedbtest.mvp_info;
+package com.asafvaron.themoviedbtest.ui.mvp_info;
 
 import android.content.Context;
 import android.util.Log;

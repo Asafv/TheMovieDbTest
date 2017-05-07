@@ -1,4 +1,4 @@
-package com.asafvaron.themoviedbtest.movie_snapping;
+package com.asafvaron.themoviedbtest.ui.movie_snapping;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,11 +17,11 @@ import android.widget.ProgressBar;
 
 import com.asafvaron.themoviedbtest.R;
 import com.asafvaron.themoviedbtest.activity.MainActivity;
-import com.asafvaron.themoviedbtest.mvp_info.MovieInfoFragment;
+import com.asafvaron.themoviedbtest.data.api.MoviesApi;
+import com.asafvaron.themoviedbtest.data.api.MoviesService;
+import com.asafvaron.themoviedbtest.data.io.MoviesResponse;
 import com.asafvaron.themoviedbtest.model.Movie;
-import com.asafvaron.themoviedbtest.model.MoviesResponse;
-import com.asafvaron.themoviedbtest.rest.ApiClient;
-import com.asafvaron.themoviedbtest.rest.ApiInterface;
+import com.asafvaron.themoviedbtest.ui.mvp_info.MovieInfoFragment;
 
 import java.util.List;
 
@@ -34,8 +34,9 @@ import retrofit2.Response;
 /**
  * Created by asafvaron on 01/03/2017.
  */
+// XXX NOT MVP
 public class SnappingFragment extends Fragment implements SnapAdapter.SnapAdapterListener {
-    private static final String TAG = SnappingFragment.class.getSimpleName();
+    private static final String TAG = "SnappingFragment";
 
     @BindView(R.id.progress)
     ProgressBar mProgressBar;
@@ -46,7 +47,7 @@ public class SnappingFragment extends Fragment implements SnapAdapter.SnapAdapte
     @BindView(R.id.rv_snap_vertical_list)
     RecyclerView mRvSnapVerticalList;
 
-    private ApiInterface mApiService;
+    private MoviesService mApiService;
 
     private List<Movie> movieHorizontalList;
     private List<Movie> movieVerticalList;
@@ -60,7 +61,7 @@ public class SnappingFragment extends Fragment implements SnapAdapter.SnapAdapte
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        mApiService = ApiClient.getClient().create(ApiInterface.class);
+        mApiService = MoviesApi.getInstance().getMoviesService();
 
     }
 
@@ -80,11 +81,11 @@ public class SnappingFragment extends Fragment implements SnapAdapter.SnapAdapte
         snapHelper.attachToRecyclerView(mRvSnapVerticalList);
 
         // get horizontal list
-        mApiService.getNowPlayingMovies(ApiClient.API_KEY)
+        mApiService.getNowPlayingMovies()
                 .enqueue(new Callback<MoviesResponse>() {
                     @Override
                     public void onResponse(Call<MoviesResponse> call, Response<MoviesResponse> response) {
-                        movieHorizontalList = response.body().getResults();
+                        movieHorizontalList = response.body().results;
                         Log.d(TAG, "onResponse: movies size: " + movieHorizontalList.size());
                         SnapAdapter snapAdapter = new SnapAdapter(movieHorizontalList, true);
                         mRvSnapHorizontalList.setAdapter(snapAdapter);
@@ -99,11 +100,11 @@ public class SnappingFragment extends Fragment implements SnapAdapter.SnapAdapte
                 });
 
         // get vertical list
-        mApiService.getTopRatedMovies(ApiClient.API_KEY)
+        mApiService.getTopRatedMovies()
                 .enqueue(new Callback<MoviesResponse>() {
                     @Override
                     public void onResponse(Call<MoviesResponse> call, Response<MoviesResponse> response) {
-                        movieVerticalList = response.body().getResults();
+                        movieVerticalList = response.body().results;
                         Log.d(TAG, "onResponse: movies size: " + movieVerticalList.size());
                         SnapAdapter snapAdapter = new SnapAdapter(movieVerticalList, false);
                         mRvSnapVerticalList.setAdapter(snapAdapter);

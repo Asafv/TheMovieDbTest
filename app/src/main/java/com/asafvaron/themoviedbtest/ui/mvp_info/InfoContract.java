@@ -1,4 +1,4 @@
-package com.asafvaron.themoviedbtest.mvp_info;
+package com.asafvaron.themoviedbtest.ui.mvp_info;
 
 import android.content.Context;
 
@@ -13,14 +13,11 @@ interface InfoContract {
         void setMovieRunTime(int runTime);
 
         void failedToGetMovieRunTime(String err);
-
     }
 
     interface Actions {
-
         void getMovieRunTime();
 
         void updateDb(Context context, Movie movie);
-
     }
 }

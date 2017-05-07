@@ -1,4 +1,4 @@
-package com.asafvaron.themoviedbtest.mvp_grid;
+package com.asafvaron.themoviedbtest.ui.mvp_grid;
 
 import android.widget.ImageView;
 

@@ -1,4 +1,4 @@
-package com.asafvaron.themoviedbtest.mvp_info;
+package com.asafvaron.themoviedbtest.ui.mvp_info;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,7 +19,7 @@ import android.widget.Toast;
 import com.asafvaron.themoviedbtest.R;
 import com.asafvaron.themoviedbtest.activity.MainActivity;
 import com.asafvaron.themoviedbtest.model.Movie;
-import com.asafvaron.themoviedbtest.rest.ApiClient;
+import com.asafvaron.themoviedbtest.data.api.MoviesApi;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
@@ -32,7 +32,7 @@ import butterknife.ButterKnife;
 public class MovieInfoFragment extends Fragment
         implements InfoContract.View {
 
-    private static final String TAG = MovieInfoFragment.class.getSimpleName();
+    private static final String TAG = "MovieInfoFragment";
 
     private Movie mMovie;
     private InfoContract.Actions mActions;
@@ -84,7 +84,7 @@ public class MovieInfoFragment extends Fragment
 
         Log.e("XXX", "onCreateView: movie id: " + mMovie.getId());
         Glide.with(getActivity())
-                .load(ApiClient.IMAGE_URL + mMovie.getPosterPath())
+                .load(MoviesApi.IMAGE_URL + mMovie.getPosterPath())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(mPoster);
 

@@ -1,10 +1,10 @@
 package com.asafvaron.themoviedbtest;
 
-import com.asafvaron.themoviedbtest.mvp_info.MovieInfoFragment;
+import com.asafvaron.themoviedbtest.data.api.MoviesApi;
+import com.asafvaron.themoviedbtest.data.api.MoviesService;
+import com.asafvaron.themoviedbtest.ui.mvp_info.MovieInfoFragment;
 import com.asafvaron.themoviedbtest.model.Movie;
-import com.asafvaron.themoviedbtest.mvp_grid.MoviesGridFragment;
-import com.asafvaron.themoviedbtest.rest.ApiClient;
-import com.asafvaron.themoviedbtest.rest.ApiInterface;
+import com.asafvaron.themoviedbtest.ui.mvp_grid.MoviesGridFragment;
 import com.google.common.collect.Lists;
 
 import org.junit.Before;
@@ -42,7 +42,7 @@ public class ExampleUnitTest {
     @Mock
     private static List<Movie> EMPTY_MOVIE_LIST = new ArrayList<>(0);
 
-    private ApiInterface mApiInterface;
+    private MoviesService mMoviesService;
 
     @Mock
     private MovieInfoFragment mMovieInfoFragment;
@@ -57,15 +57,15 @@ public class ExampleUnitTest {
         MockitoAnnotations.initMocks(this);
 
         mMoviesGridFragment = new MoviesGridFragment();
-        mApiInterface = ApiClient.getClient().create(ApiInterface.class);
+        mMoviesService = MoviesApi.getInstance().getMoviesService();
     }
 
     @Test
     public void MovieGrid_loadMovies() {
-//        verify(mApiInterface).getNowPlayingMovies(ApiClient.API_KEY);
-//        verify(mApiInterface).getTopRatedMovies(ApiClient.API_KEY);
-//        verify(mApiInterface).getPopularMovies(ApiClient.API_KEY);
-//        verify(mApiInterface).getUpcomingMovies(ApiClient.API_KEY);
+//        verify(mMoviesService).getNowPlayingMovies(MoviesApi.API_KEY);
+//        verify(mMoviesService).getTopRatedMovies(MoviesApi.API_KEY);
+//        verify(mMoviesService).getPopularMovies(MoviesApi.API_KEY);
+//        verify(mMoviesService).getUpcomingMovies(MoviesApi.API_KEY);
     }
 
     @Test

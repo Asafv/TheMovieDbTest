@@ -1,4 +1,4 @@
-package com.asafvaron.themoviedbtest.mvp_info;
+package com.asafvaron.themoviedbtest.ui.mvp_info;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -6,10 +6,10 @@ import android.util.Log;
 
 import com.asafvaron.themoviedbtest.Utils.Consts;
 import com.asafvaron.themoviedbtest.Utils.Prefs;
-import com.asafvaron.themoviedbtest.database.movies.MoviesContract;
+import com.asafvaron.themoviedbtest.data.api.MoviesApi;
+import com.asafvaron.themoviedbtest.data.api.MoviesService;
+import com.asafvaron.themoviedbtest.data.sql_db.MoviesContract;
 import com.asafvaron.themoviedbtest.model.Movie;
-import com.asafvaron.themoviedbtest.rest.ApiClient;
-import com.asafvaron.themoviedbtest.rest.ApiInterface;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,7 +26,7 @@ class InfoModel {
     private static final String TAG = "InfoModel";
 
     private final Movie mMovie;
-    private ApiInterface mApiInterface;
+    private MoviesService mMoviesService;
     private Call<Movie> mCall;
 
 
@@ -51,8 +51,8 @@ class InfoModel {
     }
 
     private void init() {
-        mApiInterface = ApiClient.getClient().create(ApiInterface.class);
-        mCall = mApiInterface.getMovieDetails(mMovie.getId(), ApiClient.API_KEY);
+        mMoviesService = MoviesApi.getInstance().getMoviesService();
+        mCall = mMoviesService.getMovieDetails(mMovie.getId());
     }
 
     void getRunTime(final InfoModelListener.RunTimeCallback runTimeCallback) {
@@ -76,8 +76,6 @@ class InfoModel {
         ContentResolver cr = context.getContentResolver();
 
         // update the single movie entry ONLY!
-//        String where = ;
-
         int rowsUpdated = cr.update(MoviesContract.Movies.CONTENT_URI,
                 movie.getValues(Prefs.getInstance().getString(Consts.LAST_DB_TYPE)),
                 MoviesContract.Movies.COLUMN_MOVIE_ID + "=" + movie.getId(), null);

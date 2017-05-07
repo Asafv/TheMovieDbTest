@@ -6,8 +6,9 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.transition.AutoTransition;
-import android.transition.Fade;
+import android.transition.ChangeBounds;
+import android.transition.ChangeImageTransform;
+import android.transition.ChangeTransform;
 import android.transition.TransitionSet;
 import android.widget.ImageView;
 
@@ -15,9 +16,9 @@ import com.asafvaron.themoviedbtest.R;
 import com.asafvaron.themoviedbtest.Utils.Consts;
 import com.asafvaron.themoviedbtest.Utils.Prefs;
 import com.asafvaron.themoviedbtest.model.Movie;
-import com.asafvaron.themoviedbtest.movie_snapping.SnappingFragment;
-import com.asafvaron.themoviedbtest.mvp_grid.MoviesGridFragment;
-import com.asafvaron.themoviedbtest.mvp_info.MovieInfoFragment;
+import com.asafvaron.themoviedbtest.ui.movie_snapping.SnappingFragment;
+import com.asafvaron.themoviedbtest.ui.mvp_grid.MoviesGridFragment;
+import com.asafvaron.themoviedbtest.ui.mvp_info.MovieInfoFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -60,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
         MoviesGridFragment moviesGridFragment = MoviesGridFragment.newInstance();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             // Setup exit transition on first fragment
-            moviesGridFragment.setSharedElementReturnTransition(new DetailsTransition());
-            moviesGridFragment.setExitTransition(new Fade());
+            moviesGridFragment.setExitTransition(null);
+            moviesGridFragment.setReenterTransition(null);
         } else {
             ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
         }
@@ -86,8 +87,13 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
             // setup enter transition on info fragment
-            movieInfoFragment.setSharedElementEnterTransition(new DetailsTransition());
-            movieInfoFragment.setEnterTransition(new Fade());
+            movieInfoFragment.setSharedElementEnterTransition(new ChangeImageTransform());
+            movieInfoFragment.setSharedElementReturnTransition(new ChangeImageTransform());
+            movieInfoFragment.setEnterTransition(new ChangeImageTransform());
+
+            // setup return transition
+//            movieInfoFragment.setReturnTransition(new ChangeBounds());
+
             ft.addSharedElement(imgView, "movieClickTransition");
         } else {
             // set default animation for lower api
@@ -102,9 +108,9 @@ public class MainActivity extends AppCompatActivity {
     private class DetailsTransition extends TransitionSet {
         DetailsTransition() {
             setOrdering(ORDERING_TOGETHER);
-            addTransition(new AutoTransition()).
-                    addTransition(new AutoTransition()).
-                    addTransition(new AutoTransition());
+            addTransition(new ChangeBounds()).
+                    addTransition(new ChangeTransform()).
+                    addTransition(new ChangeImageTransform());
         }
     }
 }

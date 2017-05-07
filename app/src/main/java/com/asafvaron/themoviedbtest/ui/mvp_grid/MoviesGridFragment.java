@@ -1,4 +1,4 @@
-package com.asafvaron.themoviedbtest.mvp_grid;
+package com.asafvaron.themoviedbtest.ui.mvp_grid;
 
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -24,11 +24,10 @@ import com.asafvaron.themoviedbtest.R;
 import com.asafvaron.themoviedbtest.Utils.Consts;
 import com.asafvaron.themoviedbtest.Utils.Prefs;
 import com.asafvaron.themoviedbtest.activity.MainActivity;
-import com.asafvaron.themoviedbtest.adapters.MoviesGridAdapter;
-import com.asafvaron.themoviedbtest.database.movies.MoviesContract;
+import com.asafvaron.themoviedbtest.data.sql_db.MoviesContract;
 import com.asafvaron.themoviedbtest.model.Movie;
-import com.asafvaron.themoviedbtest.mvp_info.MovieInfoFragment;
-import com.asafvaron.themoviedbtest.views.GridSpacingItemDecoration;
+import com.asafvaron.themoviedbtest.ui.mvp_info.MovieInfoFragment;
+import com.asafvaron.themoviedbtest.decorations.GridSpacingItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +42,7 @@ import butterknife.ButterKnife;
 public class MoviesGridFragment extends Fragment
         implements GridContract.View {
 
-    private static final String TAG = MoviesGridFragment.class.getSimpleName();
+    private static final String TAG = "MoviesGridFragment";
 
     private MoviesGridAdapter mMoviesGridAdapter;
 

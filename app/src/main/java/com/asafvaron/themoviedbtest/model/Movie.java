@@ -2,7 +2,7 @@ package com.asafvaron.themoviedbtest.model;
 
 import android.content.ContentValues;
 
-import com.asafvaron.themoviedbtest.database.movies.MoviesContract;
+import com.asafvaron.themoviedbtest.data.sql_db.MoviesContract;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -13,7 +13,7 @@ import java.util.List;
  * Created by asafvaron on 19/02/2017.
  */
 public class Movie implements Serializable{
-    private static final String TAG = Movie.class.getSimpleName();
+    private static final String TAG = "Movie";
 
     @SerializedName("poster_path")
     private String posterPath;

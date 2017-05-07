@@ -1,4 +1,4 @@
-package com.asafvaron.themoviedbtest.mvp_grid;
+package com.asafvaron.themoviedbtest.ui.mvp_grid;
 
 import android.database.Cursor;
 import android.net.Uri;
@@ -10,11 +10,11 @@ import android.util.Log;
 
 import com.asafvaron.themoviedbtest.Utils.Consts;
 import com.asafvaron.themoviedbtest.Utils.Prefs;
-import com.asafvaron.themoviedbtest.database.movies.MoviesContract;
+import com.asafvaron.themoviedbtest.data.api.MoviesApi;
+import com.asafvaron.themoviedbtest.data.sql_db.MoviesContract;
 import com.asafvaron.themoviedbtest.model.Movie;
-import com.asafvaron.themoviedbtest.model.MoviesResponse;
-import com.asafvaron.themoviedbtest.rest.ApiClient;
-import com.asafvaron.themoviedbtest.rest.ApiInterface;
+import com.asafvaron.themoviedbtest.data.io.MoviesResponse;
+import com.asafvaron.themoviedbtest.data.api.MoviesService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,21 +30,16 @@ import static com.asafvaron.themoviedbtest.MyApp.getContext;
  */
 
 class GridData implements LoaderManager.LoaderCallbacks<Cursor> {
-
-    private static final String TAG = GridData.class.getSimpleName();
+    private static final String TAG = "GridData";
 
     private static final int LOADER_ID = 1;
 
     private final LoaderManager mLoaderManager;
     private List<Movie> mMovieList = new ArrayList<>();
-    private ApiInterface mApiService;
+    private MoviesService mApiService;
     private String mCurrentDbType;
     private Call<MoviesResponse> call;
     private Listener mListener;
-
-    void setListener(GridPresenter gridPresenter) {
-        mListener = (Listener) gridPresenter;
-    }
 
     interface Listener {
         void onSuccessLoad(List<Movie> movies);
@@ -57,9 +52,13 @@ class GridData implements LoaderManager.LoaderCallbacks<Cursor> {
         init();
     }
 
+    void setListener(GridPresenter gridPresenter) {
+        mListener = gridPresenter;
+    }
+
     // init and load some data
     private void init() {
-        mApiService = ApiClient.getClient().create(ApiInterface.class);
+        mApiService = MoviesApi.getInstance().getMoviesService();
         mCurrentDbType = Prefs.getInstance().getString("last_db_type", MoviesContract.MovieTypes.NOW_PLAYING);
 
         // init loader
@@ -150,19 +149,19 @@ class GridData implements LoaderManager.LoaderCallbacks<Cursor> {
     private void getMoviesFromApi() {
         switch (mCurrentDbType) {
             case MoviesContract.MovieTypes.NOW_PLAYING:
-                call = mApiService.getNowPlayingMovies(ApiClient.API_KEY);
+                call = mApiService.getNowPlayingMovies();
                 break;
 
             case MoviesContract.MovieTypes.UPCOMING:
-                call = mApiService.getUpcomingMovies(ApiClient.API_KEY);
+                call = mApiService.getUpcomingMovies();
                 break;
 
             case MoviesContract.MovieTypes.TOP_RATED:
-                call = mApiService.getTopRatedMovies(ApiClient.API_KEY);
+                call = mApiService.getTopRatedMovies();
                 break;
 
             case MoviesContract.MovieTypes.POPULAR:
-                call = mApiService.getPopularMovies(ApiClient.API_KEY);
+                call = mApiService.getPopularMovies();
                 break;
         }
 
@@ -171,7 +170,7 @@ class GridData implements LoaderManager.LoaderCallbacks<Cursor> {
             @Override
             public void onResponse(Call<MoviesResponse> call, Response<MoviesResponse> response) {
                 Log.d(TAG, "onResponse: ");
-                List<Movie> movies = response.body().getResults();
+                List<Movie> movies = response.body().results;
 //                mListener.onSuccessLoad(movies);
                 saveToDb(movies);
             }

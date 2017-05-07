@@ -1,4 +1,4 @@
-package com.asafvaron.themoviedbtest.adapters;
+package com.asafvaron.themoviedbtest.ui.mvp_grid;
 
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
@@ -10,9 +10,8 @@ import android.widget.ImageView;
 
 import com.asafvaron.themoviedbtest.MyApp;
 import com.asafvaron.themoviedbtest.R;
+import com.asafvaron.themoviedbtest.data.api.MoviesApi;
 import com.asafvaron.themoviedbtest.model.Movie;
-import com.asafvaron.themoviedbtest.mvp_grid.GridContract;
-import com.asafvaron.themoviedbtest.rest.ApiClient;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
@@ -23,7 +22,7 @@ import java.util.List;
  */
 public class MoviesGridAdapter extends RecyclerView.Adapter<MoviesGridAdapter.MovieViewHolder> {
 
-    private static final String TAG = MoviesGridAdapter.class.getSimpleName();
+    private static final String TAG = "MoviesGridAdapter";
 
     private List<Movie> mData;
     private final GridContract.View mListener;
@@ -56,23 +55,19 @@ public class MoviesGridAdapter extends RecyclerView.Adapter<MoviesGridAdapter.Mo
 //        }
 //        holder.tv_title.setText(title);
 
-
         final ImageView imgView = holder.iv_poster;
         ViewCompat.setTransitionName(imgView, "1");
 
         // set the image
         Glide.with(MyApp.getContext())
-                .load(ApiClient.IMAGE_URL + movie.getPosterPath())
+                .load(MoviesApi.IMAGE_URL + movie.getPosterPath())
                 .placeholder(android.R.drawable.ic_menu_upload)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imgView);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: movie: " + movie);
-                mListener.onMovieClicked(imgView, movie);
-            }
+        holder.itemView.setOnClickListener(v -> {
+            Log.d(TAG, "onClick: movie: " + movie);
+            mListener.onMovieClicked(imgView, movie);
         });
     }
 
@@ -83,18 +78,13 @@ public class MoviesGridAdapter extends RecyclerView.Adapter<MoviesGridAdapter.Mo
 
     public void setData(List<Movie> movies) {
         // update only if there is a change in data
-        // FIXME: 19/03/2017 update only if there is new data
-        if (!mData.containsAll(movies)) {
-            mData = movies;
-            notifyDataSetChanged();
-            Log.d(TAG, "setData: new data was set");
-        } else {
-            Log.w(TAG, "setData: no changes - same as before");
-        }
+        mData = movies;
+        notifyDataSetChanged();
+        Log.d(TAG, "setData: new data was set");
     }
 
     class MovieViewHolder extends RecyclerView.ViewHolder {
-//        TextView tv_title;
+        //        TextView tv_title;
         ImageView iv_poster;
 
         MovieViewHolder(View itemView) {

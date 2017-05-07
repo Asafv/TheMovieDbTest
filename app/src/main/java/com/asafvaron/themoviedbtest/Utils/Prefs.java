@@ -8,8 +8,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Prefs {
-    public static final String TAG = Prefs.class.getSimpleName();
-    public static Prefs sInstance;
+    private static final String TAG = "Prefs";
+
+    private static Prefs sInstance;
 
     private final SharedPreferences pref;
     private final SharedPreferences.Editor editor;

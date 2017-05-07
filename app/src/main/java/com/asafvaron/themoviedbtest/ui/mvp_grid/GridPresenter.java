@@ -1,11 +1,11 @@
-package com.asafvaron.themoviedbtest.mvp_grid;
+package com.asafvaron.themoviedbtest.ui.mvp_grid;
 
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.asafvaron.themoviedbtest.Utils.Consts;
 import com.asafvaron.themoviedbtest.Utils.Prefs;
-import com.asafvaron.themoviedbtest.database.movies.MoviesContract;
+import com.asafvaron.themoviedbtest.data.sql_db.MoviesContract;
 import com.asafvaron.themoviedbtest.model.Movie;
 
 import java.util.List;
