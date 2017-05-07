@@ -1,4 +1,4 @@
-package com.asafvaron.themoviedbtest.ui.mvp_info;
+package com.asafvaron.themoviedbtest.ui.movie_details;
 
 import android.content.Context;
 
@@ -8,7 +8,7 @@ import com.asafvaron.themoviedbtest.model.Movie;
  * Created by asafvaron on 19/03/2017.
  */
 
-interface InfoContract {
+interface MovieDetailContract {
     interface View {
         void setMovieRunTime(int runTime);
 

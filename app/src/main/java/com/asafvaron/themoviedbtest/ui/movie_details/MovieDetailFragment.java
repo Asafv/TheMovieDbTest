@@ -1,4 +1,4 @@
-package com.asafvaron.themoviedbtest.ui.mvp_info;
+package com.asafvaron.themoviedbtest.ui.movie_details;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -29,13 +29,13 @@ import butterknife.ButterKnife;
 /**
  * Created by asafvaron on 20/02/2017.
  */
-public class MovieInfoFragment extends Fragment
-        implements InfoContract.View {
+public class MovieDetailFragment extends Fragment
+        implements MovieDetailContract.View {
 
-    private static final String TAG = "MovieInfoFragment";
+    private static final String TAG = "MovieDetailFragment";
 
     private Movie mMovie;
-    private InfoContract.Actions mActions;
+    private MovieDetailContract.Actions mActions;
 
     @BindView(R.id.tv_title)
     TextView mTitle;
@@ -55,8 +55,8 @@ public class MovieInfoFragment extends Fragment
     @BindView(R.id.iv_poster)
     ImageView mPoster;
 
-    public static MovieInfoFragment newInstance(Movie movie) {
-        MovieInfoFragment fragment = new MovieInfoFragment();
+    public static MovieDetailFragment newInstance(Movie movie) {
+        MovieDetailFragment fragment = new MovieDetailFragment();
         Bundle args = new Bundle();
         args.putSerializable("movie", movie);
         fragment.setArguments(args);
@@ -70,7 +70,7 @@ public class MovieInfoFragment extends Fragment
 
         if (getArguments() != null) {
             mMovie = (Movie) getArguments().getSerializable("movie");
-            mActions = new InfoPresenter(this, new InfoModel(mMovie));
+            mActions = new MovieDetailPresenter(this, new MovieDetailModel(mMovie));
         }
     }
 

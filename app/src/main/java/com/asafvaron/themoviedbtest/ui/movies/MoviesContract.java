@@ -1,4 +1,4 @@
-package com.asafvaron.themoviedbtest.ui.mvp_grid;
+package com.asafvaron.themoviedbtest.ui.movies;
 
 import android.widget.ImageView;
 
@@ -10,7 +10,7 @@ import java.util.List;
  * Created by asafvaron on 16/03/2017.
  */
 
-public interface GridContract {
+public interface MoviesContract {
 
     /* View */
     interface View {

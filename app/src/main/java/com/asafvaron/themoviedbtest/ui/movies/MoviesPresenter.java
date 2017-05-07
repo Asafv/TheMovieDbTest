@@ -1,11 +1,11 @@
-package com.asafvaron.themoviedbtest.ui.mvp_grid;
+package com.asafvaron.themoviedbtest.ui.movies;
 
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.asafvaron.themoviedbtest.Utils.Consts;
 import com.asafvaron.themoviedbtest.Utils.Prefs;
-import com.asafvaron.themoviedbtest.data.sql_db.MoviesContract;
+import com.asafvaron.themoviedbtest.data.sql_db.MoviesDbContract;
 import com.asafvaron.themoviedbtest.model.Movie;
 
 import java.util.List;
@@ -16,17 +16,17 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Created by asafvaron on 16/03/2017.
  */
 
-class GridPresenter implements GridContract.Actions, GridData.Listener {
+class MoviesPresenter implements MoviesContract.Actions, MoviesDataModel.Listener {
 
-    private static final String TAG = "GridPresenter";
+    private static final String TAG = "MoviesPresenter";
 
-    private final GridContract.View mView;
-    private final GridData mData;
+    private final MoviesContract.View mView;
+    private final MoviesDataModel mData;
 
-    GridPresenter(GridData gridData, GridContract.View view) {
-        mData = checkNotNull(gridData, "GridData (Model) must not be null!");
+    MoviesPresenter(MoviesDataModel moviesDataModel, MoviesContract.View view) {
+        mData = checkNotNull(moviesDataModel, "MoviesDataModel (Model) must not be null!");
         mData.setListener(this);
-        mView = checkNotNull(view, "GridContract.View (View) must not be null!");
+        mView = checkNotNull(view, "MoviesDbContract.View (View) must not be null!");
     }
 
     @Override
@@ -35,7 +35,7 @@ class GridPresenter implements GridContract.Actions, GridData.Listener {
         mView.updateProgress(true);
 
         mView.updateTitle(TextUtils.isEmpty(type)
-                ? Prefs.getInstance().getString(Consts.LAST_DB_TYPE, MoviesContract.MovieTypes.NOW_PLAYING)
+                ? Prefs.getInstance().getString(Consts.LAST_DB_TYPE, MoviesDbContract.MovieTypes.NOW_PLAYING)
                 : type);
 
         mView.popInfoIfNeeded();

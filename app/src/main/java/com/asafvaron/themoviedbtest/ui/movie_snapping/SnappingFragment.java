@@ -21,7 +21,7 @@ import com.asafvaron.themoviedbtest.data.api.MoviesApi;
 import com.asafvaron.themoviedbtest.data.api.MoviesService;
 import com.asafvaron.themoviedbtest.data.io.MoviesResponse;
 import com.asafvaron.themoviedbtest.model.Movie;
-import com.asafvaron.themoviedbtest.ui.mvp_info.MovieInfoFragment;
+import com.asafvaron.themoviedbtest.ui.movie_details.MovieDetailFragment;
 
 import java.util.List;
 
@@ -134,7 +134,7 @@ public class SnappingFragment extends Fragment implements SnapAdapter.SnapAdapte
                 .beginTransaction()
                 .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
                 .add(R.id.frags_container,
-                        MovieInfoFragment.newInstance(movieHorizontalList.get(pos)), MovieInfoFragment.class.getSimpleName())
+                        MovieDetailFragment.newInstance(movieHorizontalList.get(pos)), MovieDetailFragment.class.getSimpleName())
                 .addToBackStack(null)
                 .commit();
     }
