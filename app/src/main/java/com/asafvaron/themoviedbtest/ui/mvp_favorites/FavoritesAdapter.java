@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.asafvaron.themoviedbtest.MyApp;
 import com.asafvaron.themoviedbtest.R;
@@ -45,14 +44,14 @@ class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.ViewHolder>
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.favs_movie_item, parent, false));
+                .inflate(R.layout.movie_grid_item, parent, false));
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Movie m = mMovies.get(position);
         // set title
-        holder.tv_title.setText(m.getTitle());
+//        holder.tv_title.setText(m.getTitle());
 
         // set poster image
         Log.d(TAG, "onBindViewHolder: poster url: " + m.getPosterPath());
@@ -72,11 +71,11 @@ class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.ViewHolder>
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.iv_favs_movie_poster)
+        @BindView(R.id.iv_poster)
         ImageView iv_poster;
 
-        @BindView(R.id.tv_favs_movie_title)
-        TextView tv_title;
+//        @BindView(R.id.tv_favs_movie_title)
+//        TextView tv_title;
 
         ViewHolder(View itemView) {
             super(itemView);
