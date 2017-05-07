@@ -17,8 +17,8 @@ import com.asafvaron.themoviedbtest.Utils.Consts;
 import com.asafvaron.themoviedbtest.Utils.Prefs;
 import com.asafvaron.themoviedbtest.model.Movie;
 import com.asafvaron.themoviedbtest.ui.movie_details.MovieDetailFragment;
-import com.asafvaron.themoviedbtest.ui.movie_snapping.SnappingFragment;
 import com.asafvaron.themoviedbtest.ui.movies.MoviesFragment;
+import com.asafvaron.themoviedbtest.ui.mvp_snapping.SnappingFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
