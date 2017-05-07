@@ -11,6 +11,7 @@ import android.transition.ChangeImageTransform;
 import android.transition.ChangeTransform;
 import android.transition.TransitionSet;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.asafvaron.themoviedbtest.R;
@@ -60,6 +61,26 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_change_views:
+                String title = item.getTitle().toString();
+                // change to snap view
+                if (title.equalsIgnoreCase(getString(R.string.action_snap_view))) {
+                    item.setTitle(getString(R.string.action_list_view));
+                    loadSnappingFragment();
+                }
+                return true;
+
+            case R.id.action_favorites:
+                loadFavoritesFragment();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public void loadMovieGridFragment() {
