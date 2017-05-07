@@ -1,4 +1,4 @@
-package com.asafvaron.themoviedbtest.database;
+package com.asafvaron.themoviedbtest.data.sql_db;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;
@@ -15,9 +15,9 @@ import java.util.List;
  * Created by asafvaron on 19/02/2017.
  */
 public class MoviesContentProvider extends ContentProvider {
-    private static final String TAG = MoviesContentProvider.class.getSimpleName();
+    private static final String TAG = "MoviesContentProvider";
 
-    MoviesDbHelper moviesDbHelper;
+    private MoviesDbHelper moviesDbHelper;
 
     @Override
     public boolean onCreate() {
@@ -89,7 +89,7 @@ public class MoviesContentProvider extends ContentProvider {
      * @param uri - used to get the tables uri
      * @return only the tables name
      */
-    private String getTableName(Uri uri) {
+    public static String getTableName(Uri uri) {
         // retrieving the path after the authority
         List<String> segments = uri.getPathSegments();
         return segments.get(0);

@@ -1,6 +1,9 @@
 package com.asafvaron.themoviedbtest;
 
 import android.app.Application;
+import android.content.Context;
+
+import com.asafvaron.themoviedbtest.Utils.Prefs;
 
 /**
  * Created by asafvaron on 19/02/2017.
@@ -8,15 +11,18 @@ import android.app.Application;
 
 public class MyApp extends Application {
 
+    // FIXME: 16/03/2017 mem leak
+    private static Context mContext;
+
     @Override
     public void onCreate() {
         super.onCreate();
 
-        // testing MoviesApiEnum
+        mContext = getApplicationContext();
+        Prefs.init(mContext);
+    }
 
-//        MoviesApi.getInstance().init(getApplicationContext());
-
-        // init request queue
-        MoviesApiEnum.INSTANCE.getRequestQueue(getApplicationContext());
+    public static Context getContext() {
+        return mContext;
     }
 }
