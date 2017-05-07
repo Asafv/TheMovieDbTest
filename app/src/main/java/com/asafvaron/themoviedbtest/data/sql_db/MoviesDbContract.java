@@ -7,13 +7,13 @@ import android.provider.BaseColumns;
  * Created by asafvaron on 19/02/2017.
  */
 
-public class MoviesContract {
+public class MoviesDbContract {
 
     //the provider's authority
     public final static String AUTHORITY = "com.asafvaron.themoviedbtest.provider";
 
     // To prevent someone from accidentally instantiating the contract class,
-    private MoviesContract() {
+    private MoviesDbContract() {
     }
 
     public static class Movies implements BaseColumns {

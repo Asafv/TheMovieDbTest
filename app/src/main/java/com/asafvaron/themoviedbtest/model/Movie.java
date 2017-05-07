@@ -2,7 +2,7 @@ package com.asafvaron.themoviedbtest.model;
 
 import android.content.ContentValues;
 
-import com.asafvaron.themoviedbtest.data.sql_db.MoviesContract;
+import com.asafvaron.themoviedbtest.data.sql_db.MoviesDbContract;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -193,16 +193,16 @@ public class Movie implements Serializable{
 
     public ContentValues getValues(String dbType) {
         ContentValues values = new ContentValues();
-        values.put(MoviesContract.Movies.COLUMN_MOVIE_ID, getId());
-        values.put(MoviesContract.Movies.COLUMN_TITLE, getTitle());
-        values.put(MoviesContract.Movies.COLUMN_OVERVIEW, getOverview());
-        values.put(MoviesContract.Movies.COLUMN_RELEASE_DATE, getReleaseDate());
-        values.put(MoviesContract.Movies.COLUMN_POSTER, getPosterPath());
-        values.put(MoviesContract.Movies.COLUMN_VOTE_AVERAGE, getVoteAverage());
-        values.put(MoviesContract.Movies.COLUMN_VOTE_COUNT, getVoteCount());
-        values.put(MoviesContract.Movies.COLUMN_RUNTIME, getRunTime());
-        values.put(MoviesContract.Movies.COLUMN_IS_IN_FAVS, getIsInFavs());
-        values.put(MoviesContract.Movies.COLUMN_TYPE, dbType);
+        values.put(MoviesDbContract.Movies.COLUMN_MOVIE_ID, getId());
+        values.put(MoviesDbContract.Movies.COLUMN_TITLE, getTitle());
+        values.put(MoviesDbContract.Movies.COLUMN_OVERVIEW, getOverview());
+        values.put(MoviesDbContract.Movies.COLUMN_RELEASE_DATE, getReleaseDate());
+        values.put(MoviesDbContract.Movies.COLUMN_POSTER, getPosterPath());
+        values.put(MoviesDbContract.Movies.COLUMN_VOTE_AVERAGE, getVoteAverage());
+        values.put(MoviesDbContract.Movies.COLUMN_VOTE_COUNT, getVoteCount());
+        values.put(MoviesDbContract.Movies.COLUMN_RUNTIME, getRunTime());
+        values.put(MoviesDbContract.Movies.COLUMN_IS_IN_FAVS, getIsInFavs());
+        values.put(MoviesDbContract.Movies.COLUMN_TYPE, dbType);
         return values;
     }
 }

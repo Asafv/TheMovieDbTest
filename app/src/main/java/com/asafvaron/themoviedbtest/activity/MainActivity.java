@@ -16,9 +16,9 @@ import com.asafvaron.themoviedbtest.R;
 import com.asafvaron.themoviedbtest.Utils.Consts;
 import com.asafvaron.themoviedbtest.Utils.Prefs;
 import com.asafvaron.themoviedbtest.model.Movie;
+import com.asafvaron.themoviedbtest.ui.movie_details.MovieDetailFragment;
 import com.asafvaron.themoviedbtest.ui.movie_snapping.SnappingFragment;
-import com.asafvaron.themoviedbtest.ui.mvp_grid.MoviesGridFragment;
-import com.asafvaron.themoviedbtest.ui.mvp_info.MovieInfoFragment;
+import com.asafvaron.themoviedbtest.ui.movies.MoviesFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,15 +58,15 @@ public class MainActivity extends AppCompatActivity {
     public void loadMovieGridFragment() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
-        MoviesGridFragment moviesGridFragment = MoviesGridFragment.newInstance();
+        MoviesFragment moviesFragment = MoviesFragment.newInstance();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             // Setup exit transition on first fragment
-            moviesGridFragment.setExitTransition(null);
-            moviesGridFragment.setReenterTransition(null);
+            moviesFragment.setExitTransition(null);
+            moviesFragment.setReenterTransition(null);
         } else {
             ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
         }
-        ft.replace(R.id.frags_container, moviesGridFragment, MoviesGridFragment.class.getSimpleName())
+        ft.replace(R.id.frags_container, moviesFragment, MoviesFragment.class.getSimpleName())
                 .commit();
     }
 
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void showInfoFragment(ImageView imgView, Movie movie) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        MovieInfoFragment movieInfoFragment = MovieInfoFragment.newInstance(movie);
+        MovieDetailFragment movieDetailFragment = MovieDetailFragment.newInstance(movie);
 
         // Note that we need the API version check here because the actual transition classes (e.g. Fade)
         // are not in the support library and are only available in API 21+. The methods we are calling on the Fragment
@@ -87,19 +87,19 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
             // setup enter transition on info fragment
-            movieInfoFragment.setSharedElementEnterTransition(new ChangeImageTransform());
-            movieInfoFragment.setSharedElementReturnTransition(new ChangeImageTransform());
-            movieInfoFragment.setEnterTransition(new ChangeImageTransform());
+            movieDetailFragment.setSharedElementEnterTransition(new ChangeImageTransform());
+            movieDetailFragment.setSharedElementReturnTransition(new ChangeImageTransform());
+            movieDetailFragment.setEnterTransition(new ChangeImageTransform());
 
             // setup return transition
-//            movieInfoFragment.setReturnTransition(new ChangeBounds());
+//            movieDetailFragment.setReturnTransition(new ChangeBounds());
 
             ft.addSharedElement(imgView, "movieClickTransition");
         } else {
             // set default animation for lower api
             ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
         }
-        ft.replace(R.id.frags_container, movieInfoFragment)
+        ft.replace(R.id.frags_container, movieDetailFragment)
                 .addToBackStack(null)
                 .commit();
     }

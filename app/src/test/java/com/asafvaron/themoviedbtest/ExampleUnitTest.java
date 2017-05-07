@@ -2,9 +2,9 @@ package com.asafvaron.themoviedbtest;
 
 import com.asafvaron.themoviedbtest.data.api.MoviesApi;
 import com.asafvaron.themoviedbtest.data.api.MoviesService;
-import com.asafvaron.themoviedbtest.ui.mvp_info.MovieInfoFragment;
+import com.asafvaron.themoviedbtest.ui.movies.MoviesFragment;
+import com.asafvaron.themoviedbtest.ui.movie_details.MovieDetailFragment;
 import com.asafvaron.themoviedbtest.model.Movie;
-import com.asafvaron.themoviedbtest.ui.mvp_grid.MoviesGridFragment;
 import com.google.common.collect.Lists;
 
 import org.junit.Before;
@@ -45,10 +45,10 @@ public class ExampleUnitTest {
     private MoviesService mMoviesService;
 
     @Mock
-    private MovieInfoFragment mMovieInfoFragment;
+    private MovieDetailFragment mMovieDetailFragment;
 
     @Mock
-    private MoviesGridFragment mMoviesGridFragment;
+    private MoviesFragment mMoviesFragment;
 
     @Before
     public void setupViews() {
@@ -56,7 +56,7 @@ public class ExampleUnitTest {
         // inject the mocks in the test the initMocks method needs to be called.
         MockitoAnnotations.initMocks(this);
 
-        mMoviesGridFragment = new MoviesGridFragment();
+        mMoviesFragment = new MoviesFragment();
         mMoviesService = MoviesApi.getInstance().getMoviesService();
     }
 
