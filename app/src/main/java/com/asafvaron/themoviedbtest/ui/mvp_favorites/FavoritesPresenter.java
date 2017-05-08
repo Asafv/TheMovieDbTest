@@ -58,24 +58,27 @@ class FavoritesPresenter implements FavoritesContract.UserActions,
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Log.d(TAG, "onCreateLoader: ");
 
+        String selection = MoviesDbContract.Movies.COLUMN_IS_IN_FAVS + "=?";
+        String[] selectionArgs = {String.valueOf(1)};
+
         // return a new loader for favorites db
-        return new CursorLoader(MyApp.getContext(), MoviesDbContract.Favorites.CONTENT_URI,
-                null, null, null, null);
+        return new CursorLoader(MyApp.getContext(), MoviesDbContract.Movies.CONTENT_URI,
+                null, selection, selectionArgs, null);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor c) {
-        Log.d(TAG, "onLoadFinished: ");
+        Log.d(TAG, "onLoadFinished: " + c.getCount());
         while (c.moveToNext()) {
             Movie m = new Movie();
-            m.setId(c.getInt(c.getColumnIndex(MoviesDbContract.Favorites.COLUMN_MOVIE_ID)));
-            m.setTitle(c.getString(c.getColumnIndex(MoviesDbContract.Favorites.COLUMN_TITLE)));
-            m.setOriginalTitle(c.getString(c.getColumnIndex(MoviesDbContract.Favorites.COLUMN_ORIGINAL_TITLE)));
-            m.setOverview(c.getString(c.getColumnIndex(MoviesDbContract.Favorites.COLUMN_OVERVIEW)));
-            m.setVoteAverage(c.getDouble(c.getColumnIndex(MoviesDbContract.Favorites.COLUMN_VOTE_AVERAGE)));
-            m.setVoteCount(c.getInt(c.getColumnIndex(MoviesDbContract.Favorites.COLUMN_VOTE_COUNT)));
-            m.setPosterPath(c.getString(c.getColumnIndex(MoviesDbContract.Favorites.COLUMN_POSTER)));
-            m.setReleaseDate(c.getString(c.getColumnIndex(MoviesDbContract.Favorites.COLUMN_RELEASE_DATE)));
+            m.setId(c.getInt(c.getColumnIndex(MoviesDbContract.Movies.COLUMN_MOVIE_ID)));
+            m.setTitle(c.getString(c.getColumnIndex(MoviesDbContract.Movies.COLUMN_TITLE)));
+            m.setOriginalTitle(c.getString(c.getColumnIndex(MoviesDbContract.Movies.COLUMN_ORIGINAL_TITLE)));
+            m.setOverview(c.getString(c.getColumnIndex(MoviesDbContract.Movies.COLUMN_OVERVIEW)));
+            m.setVoteAverage(c.getDouble(c.getColumnIndex(MoviesDbContract.Movies.COLUMN_VOTE_AVERAGE)));
+            m.setVoteCount(c.getInt(c.getColumnIndex(MoviesDbContract.Movies.COLUMN_VOTE_COUNT)));
+            m.setPosterPath(c.getString(c.getColumnIndex(MoviesDbContract.Movies.COLUMN_POSTER)));
+            m.setReleaseDate(c.getString(c.getColumnIndex(MoviesDbContract.Movies.COLUMN_RELEASE_DATE)));
             // create the list
             mFavsList.add(m);
         }
