@@ -125,6 +125,7 @@ class MoviesDataModel implements LoaderManager.LoaderCallbacks<Cursor> {
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Log.d(TAG, "onCreateLoader: ");
+        mMovieList = new ArrayList<>();
         // query the database using the movie type
         String selection = MoviesDbContract.Movies.COLUMN_TYPE + "=?";
         String[] selectionArgs = {mCurrentDbType};
