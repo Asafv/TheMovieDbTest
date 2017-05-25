@@ -46,7 +46,7 @@ public class MoviesFragment extends Fragment
 
     private MoviesGridAdapter mMoviesGridAdapter;
 
-    private MoviesContract.Actions mActions;
+    private MoviesContract.Presenter mPresenter;
 
     @BindView(R.id.progress)
     ProgressBar mProgress;
@@ -64,7 +64,7 @@ public class MoviesFragment extends Fragment
         Log.d(TAG, "onCreate: ");
         setHasOptionsMenu(true);
 
-        mActions = new MoviesPresenter(new MoviesDataModel(getLoaderManager()), this);
+        mPresenter = new MoviesPresenter(new MoviesDataModel(getLoaderManager()), this);
     }
 
     @Nullable
@@ -98,7 +98,7 @@ public class MoviesFragment extends Fragment
     public void onResume() {
         super.onResume();
         // get the movies from api
-        mActions.loadMovies(null);
+        mPresenter.loadMovies(null);
     }
 
     @Override
@@ -119,19 +119,19 @@ public class MoviesFragment extends Fragment
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_now_playing:
-                mActions.loadMovies(MoviesDbContract.MovieTypes.NOW_PLAYING);
+                mPresenter.loadMovies(MoviesDbContract.MovieTypes.NOW_PLAYING);
                 return true;
 
             case R.id.action_upcoming:
-                mActions.loadMovies(MoviesDbContract.MovieTypes.UPCOMING);
+                mPresenter.loadMovies(MoviesDbContract.MovieTypes.UPCOMING);
                 return true;
 
             case R.id.action_top_rated:
-                mActions.loadMovies(MoviesDbContract.MovieTypes.TOP_RATED);
+                mPresenter.loadMovies(MoviesDbContract.MovieTypes.TOP_RATED);
                 return true;
 
             case R.id.action_popular:
-                mActions.loadMovies(MoviesDbContract.MovieTypes.POPULAR);
+                mPresenter.loadMovies(MoviesDbContract.MovieTypes.POPULAR);
                 return true;
 
             case R.id.action_favorites:

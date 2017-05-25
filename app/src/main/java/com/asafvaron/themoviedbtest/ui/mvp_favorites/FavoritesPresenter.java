@@ -21,7 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by asafvaron on 05/03/2017.
  */
-class FavoritesPresenter implements FavoritesContract.UserActions,
+class FavoritesPresenter implements FavoritesContract.Presenter,
         LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = "FavoritesPresenter";

@@ -44,7 +44,7 @@ public class FavoritesFragment extends Fragment
     @BindView(R.id.rv_favs_list)
     RecyclerView mRvFavsList;
 
-    private FavoritesContract.UserActions mActionListener;
+    private FavoritesContract.Presenter mActionListener;
     private FavoritesAdapter mFavsAdapter;
 
     public static FavoritesFragment newInstance() {

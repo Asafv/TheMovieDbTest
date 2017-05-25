@@ -15,7 +15,7 @@ interface MovieDetailContract {
         void failedToGetMovieRunTime(String err);
     }
 
-    interface Actions {
+    interface Presenter {
         void getMovieRunTime();
 
         void updateDb(Context context, Movie movie);

@@ -29,7 +29,7 @@ public interface MoviesContract {
     }
 
     /* Model/Presenter communicator */
-    interface Actions {
+    interface Presenter {
 
         void loadMovies(String type);
 

@@ -53,7 +53,7 @@ public class SnappingFragment extends Fragment
 //    private List<Movie> movieVerticalList;
 
     private List<Movie> movieHorizontalList;
-    private SnappingContract.UserActions mActionListener;
+    private SnappingContract.Presenter mActionListener;
 
 
     public static SnappingFragment newInstance() {

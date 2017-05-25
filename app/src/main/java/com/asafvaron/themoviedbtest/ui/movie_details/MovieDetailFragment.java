@@ -35,7 +35,7 @@ public class MovieDetailFragment extends Fragment
     private static final String TAG = "MovieDetailFragment";
 
     private Movie mMovie;
-    private MovieDetailContract.Actions mActions;
+    private MovieDetailContract.Presenter mPresenter;
 
     @BindView(R.id.tv_title)
     TextView mTitle;
@@ -70,7 +70,7 @@ public class MovieDetailFragment extends Fragment
 
         if (getArguments() != null) {
             mMovie = (Movie) getArguments().getSerializable("movie");
-            mActions = new MovieDetailPresenter(this, new MovieDetailModel(mMovie));
+            mPresenter = new MovieDetailPresenter(this, new MovieDetailModel(mMovie));
         }
     }
 
@@ -100,7 +100,7 @@ public class MovieDetailFragment extends Fragment
         } else {
             Log.w(TAG, "fetching runtime from server ");
             mRunTime.setText(getString(R.string.fetch_duration_tmp));
-            mActions.getMovieRunTime();
+            mPresenter.getMovieRunTime();
         }
         return root;
     }
@@ -153,7 +153,7 @@ public class MovieDetailFragment extends Fragment
             item.setIcon(R.drawable.ic_favorite);
         }
         // update the DB after changes
-        mActions.updateDb(getContext(), mMovie);
+        mPresenter.updateDb(getContext(), mMovie);
     }
 
     private void setRunTime(int runTime) {
@@ -164,7 +164,7 @@ public class MovieDetailFragment extends Fragment
     public void setMovieRunTime(int runTime) {
         setRunTime(runTime);
         mMovie.setRunTime(runTime);
-        mActions.updateDb(getContext(), mMovie);
+        mPresenter.updateDb(getContext(), mMovie);
     }
 
     @Override

@@ -19,7 +19,7 @@ interface SnappingContract {
         void onPopularLoaded(List<Movie> movies);
     }
 
-    interface UserActions {
+    interface Presenter {
         void loadData(boolean forceLoad);
     }
 }

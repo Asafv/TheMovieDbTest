@@ -11,7 +11,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Created by asafvaron on 19/03/2017.
  */
 
-class MovieDetailPresenter implements MovieDetailContract.Actions {
+class MovieDetailPresenter implements MovieDetailContract.Presenter {
 
     private static final String TAG = "MovieDetailPresenter";
 

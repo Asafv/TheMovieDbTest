@@ -14,7 +14,7 @@ interface FavoritesContract {
         void updateProgress(boolean isUpdating);
     }
 
-    interface UserActions {
+    interface Presenter {
 
         void loadFavorites();
     }

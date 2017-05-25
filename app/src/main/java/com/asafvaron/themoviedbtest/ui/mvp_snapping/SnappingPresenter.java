@@ -21,7 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by asafvaron on 05/03/2017.
  */
-public class SnappingPresenter implements SnappingContract.UserActions {
+public class SnappingPresenter implements SnappingContract.Presenter {
     private static final String TAG = SnappingPresenter.class.getSimpleName();
 
     private final MoviesService mApiService;
