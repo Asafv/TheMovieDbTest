@@ -10,11 +10,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class MoviesDbHelper extends SQLiteOpenHelper {
     private static final String TAG = "MoviesDbHelper";
 
-    public static final int DB_VERSION = 6;
+    public static final int DB_VERSION = 7;
     public static final String DB_NAME = "theMoviesDbTest.db";
 
     // create table
-    private static final String SQL_CREATE_ENTRIES =
+    private static final String SQL_CREATE_MOVIES_ENTRIES =
             "CREATE TABLE " + MoviesDbContract.Movies.TABLE_NAME + " (" +
                     MoviesDbContract.Movies._ID + " INTEGER PRIMARY KEY," +
                     MoviesDbContract.Movies.COLUMN_MOVIE_ID + " REAL," +
@@ -30,8 +30,8 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
                     MoviesDbContract.Movies.COLUMN_IS_IN_FAVS + " REAL," +
                     MoviesDbContract.Movies.COLUMN_RUNTIME + " REAL)";
 
-    // delete table
-    private static final String SQL_DELETE_ENTRIES =
+    // delete movies table
+    private static final String SQL_DELETE_MOVIES_ENTRIES =
             "DROP TABLE IF EXISTS " + MoviesDbContract.Movies.TABLE_NAME;
 
     public MoviesDbHelper(Context context) {
@@ -40,14 +40,14 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(SQL_CREATE_ENTRIES);
+        db.execSQL(SQL_CREATE_MOVIES_ENTRIES);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // This database is only a cache for online data, so its upgrade policy is
         // to simply to discard the data and start over
-        db.execSQL(SQL_DELETE_ENTRIES);
+        db.execSQL(SQL_DELETE_MOVIES_ENTRIES);
         // XXX ask Yossi - is there a better way to upgrade table instead of deleting the previous one
         onCreate(db);
     }

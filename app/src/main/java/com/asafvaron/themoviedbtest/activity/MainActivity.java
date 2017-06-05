@@ -10,6 +10,8 @@ import android.transition.ChangeBounds;
 import android.transition.ChangeImageTransform;
 import android.transition.ChangeTransform;
 import android.transition.TransitionSet;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.asafvaron.themoviedbtest.R;
@@ -17,8 +19,9 @@ import com.asafvaron.themoviedbtest.Utils.Consts;
 import com.asafvaron.themoviedbtest.Utils.Prefs;
 import com.asafvaron.themoviedbtest.model.Movie;
 import com.asafvaron.themoviedbtest.ui.movie_details.MovieDetailFragment;
-import com.asafvaron.themoviedbtest.ui.movie_snapping.SnappingFragment;
 import com.asafvaron.themoviedbtest.ui.movies.MoviesFragment;
+import com.asafvaron.themoviedbtest.ui.mvp_favorites.FavoritesFragment;
+import com.asafvaron.themoviedbtest.ui.mvp_snapping.SnappingFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,6 +56,42 @@ public class MainActivity extends AppCompatActivity {
                 loadSnappingFragment();
                 break;
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+//            case R.id.action_change_views:
+//                String title = item.getTitle().toString();
+//                // change to snap view
+//                if (title.equalsIgnoreCase(getString(R.string.action_snap_view))) {
+//                    item.setTitle(getString(R.string.action_list_view));
+//                    loadSnappingFragment();
+//                } else {
+//                    item.setTitle(getString(R.string.action_snap_view));
+//                    loadMovieGridFragment();
+//                }
+//                return true;
+
+            case R.id.action_favorites:
+                loadFavoritesFragment();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void loadFavoritesFragment() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.frags_container, FavoritesFragment.newInstance(), FavoritesFragment.class.getSimpleName())
+                .addToBackStack(null)
+                .commit();
     }
 
     public void loadMovieGridFragment() {

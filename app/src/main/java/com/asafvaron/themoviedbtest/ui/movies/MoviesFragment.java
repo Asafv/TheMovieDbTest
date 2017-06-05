@@ -1,4 +1,4 @@
-package com.asafvaron.themoviedbtest.ui.mvp_grid;
+package com.asafvaron.themoviedbtest.ui.movies;
 
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -24,10 +24,9 @@ import com.asafvaron.themoviedbtest.R;
 import com.asafvaron.themoviedbtest.Utils.Consts;
 import com.asafvaron.themoviedbtest.Utils.Prefs;
 import com.asafvaron.themoviedbtest.activity.MainActivity;
-import com.asafvaron.themoviedbtest.data.sql_db.MoviesContract;
-import com.asafvaron.themoviedbtest.model.Movie;
-import com.asafvaron.themoviedbtest.ui.mvp_info.MovieInfoFragment;
 import com.asafvaron.themoviedbtest.decorations.GridSpacingItemDecoration;
+import com.asafvaron.themoviedbtest.model.Movie;
+import com.asafvaron.themoviedbtest.ui.movie_details.MovieDetailFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,14 +38,14 @@ import butterknife.ButterKnife;
  * Created by asafvaron on 19/02/2017.
  */
 
-public class MoviesGridFragment extends Fragment
-        implements GridContract.View {
+public class MoviesFragment extends Fragment
+        implements MoviesContract.View {
 
-    private static final String TAG = "MoviesGridFragment";
+    private static final String TAG = "MoviesFragment";
 
     private MoviesGridAdapter mMoviesGridAdapter;
 
-    private GridContract.Actions mActions;
+    private MoviesContract.Presenter mPresenter;
 
     @BindView(R.id.progress)
     ProgressBar mProgress;
@@ -54,8 +53,8 @@ public class MoviesGridFragment extends Fragment
     @BindView(R.id.rv_grid_list)
     RecyclerView mRvGridList;
 
-    public static MoviesGridFragment newInstance() {
-        return new MoviesGridFragment();
+    public static MoviesFragment newInstance() {
+        return new MoviesFragment();
     }
 
     @Override
@@ -64,7 +63,7 @@ public class MoviesGridFragment extends Fragment
         Log.d(TAG, "onCreate: ");
         setHasOptionsMenu(true);
 
-        mActions = new GridPresenter(new GridData(getLoaderManager()), this);
+        mPresenter = new MoviesPresenter(new MoviesDataModel(getLoaderManager()), this);
     }
 
     @Nullable
@@ -98,7 +97,7 @@ public class MoviesGridFragment extends Fragment
     public void onResume() {
         super.onResume();
         // get the movies from api
-        mActions.loadMovies(null);
+        mPresenter.loadMovies(null);
     }
 
     @Override
@@ -117,30 +116,37 @@ public class MoviesGridFragment extends Fragment
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_now_playing:
-                mActions.loadMovies(MoviesContract.MovieTypes.NOW_PLAYING);
-                return true;
-
-            case R.id.action_upcoming:
-                mActions.loadMovies(MoviesContract.MovieTypes.UPCOMING);
-                return true;
-
-            case R.id.action_top_rated:
-                mActions.loadMovies(MoviesContract.MovieTypes.TOP_RATED);
-                return true;
-
-            case R.id.action_popular:
-                mActions.loadMovies(MoviesContract.MovieTypes.POPULAR);
-                return true;
-
-            case R.id.action_favorites:
-                loadFavoritesFragment();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() != 0) {
+            mPresenter.loadMovies(item.getTitle().toString());
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
         }
+
+//        switch (item.getItemId()) {
+//            case R.id.action_now_playing:
+//                mPresenter.loadMovies(MoviesDbContract.MovieTypes.NOW_PLAYING);
+//                return true;
+//
+//            case R.id.action_upcoming:
+//                mPresenter.loadMovies(MoviesDbContract.MovieTypes.UPCOMING);
+//                return true;
+//
+//            case R.id.action_top_rated:
+//                mPresenter.loadMovies(MoviesDbContract.MovieTypes.TOP_RATED);
+//                return true;
+//
+//            case R.id.action_popular:
+//                mPresenter.loadMovies(MoviesDbContract.MovieTypes.POPULAR);
+//                return true;
+//
+//            case R.id.action_favorites:
+//                loadFavoritesFragment();
+//                return true;
+//
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
     }
 
     private void loadFavoritesFragment() {
@@ -157,12 +163,6 @@ public class MoviesGridFragment extends Fragment
     }
 
     @Override
-    public void onSuccessMoviesLoaded(List<Movie> movies) {
-        Log.i(TAG, "onSuccessMoviesLoaded: ");
-        mMoviesGridAdapter.setData(movies);
-    }
-
-    @Override
     public void onFailedLoadMovies(String error) {
         Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
     }
@@ -176,8 +176,14 @@ public class MoviesGridFragment extends Fragment
     @Override
     public void popInfoIfNeeded() {
         if (getActivity().getSupportFragmentManager()
-                .findFragmentByTag(MovieInfoFragment.class.getSimpleName()) != null) {
+                .findFragmentByTag(MovieDetailFragment.class.getSimpleName()) != null) {
             getActivity().onBackPressed();
         }
+    }
+
+    @Override
+    public void onSuccessMoviesLoaded(List<? extends Movie> movies) {
+        Log.i(TAG, "onSuccessMoviesLoaded: ");
+        mMoviesGridAdapter.setData((List<Movie>) movies);
     }
 }

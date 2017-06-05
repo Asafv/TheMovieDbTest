@@ -19,4 +19,6 @@ public interface MoviesDataSource {
     Observable<List<Movie>> getUpcomingMovies();
 
     Observable<List<Movie>> getNowPlayingMovies();
+
+    Observable<List<Movie>> getMoviesByType(String type);
 }

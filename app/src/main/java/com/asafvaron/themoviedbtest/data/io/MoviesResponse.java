@@ -9,7 +9,6 @@ import java.util.List;
  * Created by asafvaron on 20/02/2017.
  */
 public class MoviesResponse {
-    private static final String TAG = "MoviesResponse";
 
     @SerializedName("page")
     public int page;

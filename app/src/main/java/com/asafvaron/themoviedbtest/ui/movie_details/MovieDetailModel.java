@@ -1,4 +1,4 @@
-package com.asafvaron.themoviedbtest.ui.mvp_info;
+package com.asafvaron.themoviedbtest.ui.movie_details;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -8,7 +8,7 @@ import com.asafvaron.themoviedbtest.Utils.Consts;
 import com.asafvaron.themoviedbtest.Utils.Prefs;
 import com.asafvaron.themoviedbtest.data.api.MoviesApi;
 import com.asafvaron.themoviedbtest.data.api.MoviesService;
-import com.asafvaron.themoviedbtest.data.sql_db.MoviesContract;
+import com.asafvaron.themoviedbtest.data.sql_db.MoviesDbContract;
 import com.asafvaron.themoviedbtest.model.Movie;
 
 import retrofit2.Call;
@@ -21,9 +21,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Created by asafvaron on 19/03/2017.
  */
 
-class InfoModel {
+// TODO: 07/05/2017 convert to Clean pattern
+class MovieDetailModel {
 
-    private static final String TAG = "InfoModel";
+    private static final String TAG = "MovieDetailModel";
 
     private final Movie mMovie;
     private MoviesService mMoviesService;
@@ -45,7 +46,7 @@ class InfoModel {
     }
 
     // will be created for each movie
-    InfoModel(Movie movie) {
+    MovieDetailModel(Movie movie) {
         mMovie = checkNotNull(movie, "Movie object cannot be null!!");
         init();
     }
@@ -76,9 +77,9 @@ class InfoModel {
         ContentResolver cr = context.getContentResolver();
 
         // update the single movie entry ONLY!
-        int rowsUpdated = cr.update(MoviesContract.Movies.CONTENT_URI,
+        int rowsUpdated = cr.update(MoviesDbContract.Movies.CONTENT_URI,
                 movie.getValues(Prefs.getInstance().getString(Consts.LAST_DB_TYPE)),
-                MoviesContract.Movies.COLUMN_MOVIE_ID + "=" + movie.getId(), null);
+                MoviesDbContract.Movies.COLUMN_MOVIE_ID + "=" + movie.getId(), null);
 
         Log.e(TAG, "updateMovieToDb: rowsUpdated: " + rowsUpdated);
         if (rowsUpdated == 1) {

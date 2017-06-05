@@ -13,7 +13,6 @@ import java.util.List;
  * Created by asafvaron on 19/02/2017.
  */
 public class Movie implements Serializable{
-    private static final String TAG = "Movie";
 
     @SerializedName("poster_path")
     private String posterPath;

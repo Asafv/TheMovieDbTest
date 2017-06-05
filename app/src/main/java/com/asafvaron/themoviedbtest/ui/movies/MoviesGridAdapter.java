@@ -1,4 +1,4 @@
-package com.asafvaron.themoviedbtest.ui.mvp_grid;
+package com.asafvaron.themoviedbtest.ui.movies;
 
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
@@ -25,7 +25,7 @@ public class MoviesGridAdapter extends RecyclerView.Adapter<MoviesGridAdapter.Mo
     private static final String TAG = "MoviesGridAdapter";
 
     private List<Movie> mData;
-    private final GridContract.View mListener;
+    private final MoviesContract.View mListener;
 
     /**
      * receives a List of Movie and the View that presents the data
@@ -33,7 +33,7 @@ public class MoviesGridAdapter extends RecyclerView.Adapter<MoviesGridAdapter.Mo
      * @param data
      * @param mView
      */
-    public MoviesGridAdapter(List<Movie> data, GridContract.View mView) {
+    public MoviesGridAdapter(List<Movie> data, MoviesContract.View mView) {
         this.mData = data;
         mListener = mView;
     }

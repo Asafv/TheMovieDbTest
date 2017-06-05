@@ -52,4 +52,9 @@ public class MoviesRepository implements MoviesDataSource {
     public Observable<List<Movie>> getNowPlayingMovies() {
         return null;
     }
+
+    @Override
+    public Observable<List<Movie>> getMoviesByType(String type) {
+        return null;
+    }
 }

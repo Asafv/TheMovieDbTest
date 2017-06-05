@@ -1,4 +1,4 @@
-package com.asafvaron.themoviedbtest.ui.movie_snapping;
+package com.asafvaron.themoviedbtest.ui.mvp_snapping;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.asafvaron.themoviedbtest.MyApp;
 import com.asafvaron.themoviedbtest.R;
-import com.asafvaron.themoviedbtest.data.api.MoviesApi;
 import com.asafvaron.themoviedbtest.model.Movie;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -21,14 +20,14 @@ import java.util.List;
  * Created by asafvaron on 01/03/2017.
  */
 public class SnapAdapter extends RecyclerView.Adapter<SnapAdapter.ViewHolder> {
-    private static final String TAG = "SnapAdapter";
+    private static final String TAG = SnapAdapter.class.getSimpleName();
 
     private final List<Movie> mMoviesList;
     private final boolean horizontal;
     private SnapAdapterListener mListener;
 
     public interface SnapAdapterListener {
-        void onMovieClicked(int pos);
+        void onMovieClicked(Movie movie);
     }
 
     public void setListener(SnappingFragment listener) {
@@ -57,7 +56,6 @@ public class SnapAdapter extends RecyclerView.Adapter<SnapAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         Log.d(TAG, "onBindViewHolder: ");
         final Movie movie = mMoviesList.get(position);
-        final int pos = position;
         Log.d(TAG, "movie: " + movie.getTitle());
 
         String title = movie.getTitle();
@@ -66,16 +64,20 @@ public class SnapAdapter extends RecyclerView.Adapter<SnapAdapter.ViewHolder> {
 
         holder.tv_snap_title.setText(title);
 
+        Log.d(TAG, "onBindViewHolder: poster path: " + movie.getPosterPath());
         Glide.with(MyApp.getContext())
-                .load(MoviesApi.IMAGE_URL + movie.getPosterPath())
+                .load(movie.getPosterPath())
                 .placeholder(android.R.drawable.ic_menu_upload)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(holder.iv_snap_poster);
 
 
-        holder.itemView.setOnClickListener(v -> {
-            Log.d(TAG, "onClick: movie: " + movie);
-            mListener.onMovieClicked(pos);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: movie: " + movie);
+                mListener.onMovieClicked(movie);
+            }
         });
     }
 

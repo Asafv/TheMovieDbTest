@@ -1,4 +1,4 @@
-package com.asafvaron.themoviedbtest.ui.mvp_grid;
+package com.asafvaron.themoviedbtest.ui.movies;
 
 import android.database.Cursor;
 import android.net.Uri;
@@ -11,7 +11,7 @@ import android.util.Log;
 import com.asafvaron.themoviedbtest.Utils.Consts;
 import com.asafvaron.themoviedbtest.Utils.Prefs;
 import com.asafvaron.themoviedbtest.data.api.MoviesApi;
-import com.asafvaron.themoviedbtest.data.sql_db.MoviesContract;
+import com.asafvaron.themoviedbtest.data.sql_db.MoviesDbContract;
 import com.asafvaron.themoviedbtest.model.Movie;
 import com.asafvaron.themoviedbtest.data.io.MoviesResponse;
 import com.asafvaron.themoviedbtest.data.api.MoviesService;
@@ -29,8 +29,9 @@ import static com.asafvaron.themoviedbtest.MyApp.getContext;
  * Created by asafvaron on 16/03/2017.
  */
 
-class GridData implements LoaderManager.LoaderCallbacks<Cursor> {
-    private static final String TAG = "GridData";
+// TODO: 07/05/2017 convert to Clean pattern
+class MoviesDataModel implements LoaderManager.LoaderCallbacks<Cursor> {
+    private static final String TAG = "MoviesDataModel";
 
     private static final int LOADER_ID = 1;
 
@@ -47,19 +48,19 @@ class GridData implements LoaderManager.LoaderCallbacks<Cursor> {
         void onFailedLoad(String error);
     }
 
-    GridData(LoaderManager loaderManager) {
+    MoviesDataModel(LoaderManager loaderManager) {
         this.mLoaderManager = loaderManager;
         init();
     }
 
-    void setListener(GridPresenter gridPresenter) {
-        mListener = gridPresenter;
+    void setListener(MoviesPresenter moviesPresenter) {
+        mListener = moviesPresenter;
     }
 
     // init and load some data
     private void init() {
         mApiService = MoviesApi.getInstance().getMoviesService();
-        mCurrentDbType = Prefs.getInstance().getString("last_db_type", MoviesContract.MovieTypes.NOW_PLAYING);
+        mCurrentDbType = Prefs.getInstance().getString("last_db_type", MoviesDbContract.MovieTypes.NOW_PLAYING);
 
         // init loader
         mLoaderManager.initLoader(LOADER_ID, null, this);
@@ -77,7 +78,7 @@ class GridData implements LoaderManager.LoaderCallbacks<Cursor> {
         }
 
         // set the new DB type
-        mCurrentDbType = (type == null) ? MoviesContract.MovieTypes.NOW_PLAYING : type;
+        mCurrentDbType = (type == null) ? MoviesDbContract.MovieTypes.NOW_PLAYING : type;
 
         mLoaderManager.restartLoader(LOADER_ID, null, this);
     }
@@ -90,8 +91,8 @@ class GridData implements LoaderManager.LoaderCallbacks<Cursor> {
     private void saveToDb(List<Movie> movies) {
         for (Movie m : movies) {
             Uri uri = getContext().getContentResolver()
-                    .insert(MoviesContract.Movies.CONTENT_URI, m.getValues(mCurrentDbType));
-//                            ,MoviesContract.Movies.COLUMN_MOVIE_ID + "=" + m.getId(),
+                    .insert(MoviesDbContract.Movies.CONTENT_URI, m.getValues(mCurrentDbType));
+//                            ,MoviesDbContract.Movies.COLUMN_MOVIE_ID + "=" + m.getId(),
 //                            null*/);
             Log.w(TAG, "saveToDb: uri:" + uri);
         }
@@ -104,16 +105,16 @@ class GridData implements LoaderManager.LoaderCallbacks<Cursor> {
 
         while (c.moveToNext()) {
             Movie m = new Movie();
-            m.setId(c.getInt(c.getColumnIndex(MoviesContract.Movies.COLUMN_MOVIE_ID)));
-            m.setTitle(c.getString(c.getColumnIndex(MoviesContract.Movies.COLUMN_TITLE)));
-            m.setOriginalTitle(c.getString(c.getColumnIndex(MoviesContract.Movies.COLUMN_ORIGINAL_TITLE)));
-            m.setOverview(c.getString(c.getColumnIndex(MoviesContract.Movies.COLUMN_OVERVIEW)));
-            m.setVoteAverage(c.getDouble(c.getColumnIndex(MoviesContract.Movies.COLUMN_VOTE_AVERAGE)));
-            m.setVoteCount(c.getInt(c.getColumnIndex(MoviesContract.Movies.COLUMN_VOTE_COUNT)));
-            m.setPosterPath(c.getString(c.getColumnIndex(MoviesContract.Movies.COLUMN_POSTER)));
-            m.setReleaseDate(c.getString(c.getColumnIndex(MoviesContract.Movies.COLUMN_RELEASE_DATE)));
-            m.setRunTime(c.getInt(c.getColumnIndex(MoviesContract.Movies.COLUMN_RUNTIME)));
-            m.setIsInFavs(c.getInt(c.getColumnIndex(MoviesContract.Movies.COLUMN_IS_IN_FAVS)));
+            m.setId(c.getInt(c.getColumnIndex(MoviesDbContract.Movies.COLUMN_MOVIE_ID)));
+            m.setTitle(c.getString(c.getColumnIndex(MoviesDbContract.Movies.COLUMN_TITLE)));
+            m.setOriginalTitle(c.getString(c.getColumnIndex(MoviesDbContract.Movies.COLUMN_ORIGINAL_TITLE)));
+            m.setOverview(c.getString(c.getColumnIndex(MoviesDbContract.Movies.COLUMN_OVERVIEW)));
+            m.setVoteAverage(c.getDouble(c.getColumnIndex(MoviesDbContract.Movies.COLUMN_VOTE_AVERAGE)));
+            m.setVoteCount(c.getInt(c.getColumnIndex(MoviesDbContract.Movies.COLUMN_VOTE_COUNT)));
+            m.setPosterPath(c.getString(c.getColumnIndex(MoviesDbContract.Movies.COLUMN_POSTER)));
+            m.setReleaseDate(c.getString(c.getColumnIndex(MoviesDbContract.Movies.COLUMN_RELEASE_DATE)));
+            m.setRunTime(c.getInt(c.getColumnIndex(MoviesDbContract.Movies.COLUMN_RUNTIME)));
+            m.setIsInFavs(c.getInt(c.getColumnIndex(MoviesDbContract.Movies.COLUMN_IS_IN_FAVS)));
 //            Log.d(TAG, "getMovies: m= " + m.toString());
             movies.add(m);
         }
@@ -124,11 +125,12 @@ class GridData implements LoaderManager.LoaderCallbacks<Cursor> {
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Log.d(TAG, "onCreateLoader: ");
+        mMovieList = new ArrayList<>();
         // query the database using the movie type
-        String selection = MoviesContract.Movies.COLUMN_TYPE + "=?";
+        String selection = MoviesDbContract.Movies.COLUMN_TYPE + "=?";
         String[] selectionArgs = {mCurrentDbType};
 
-        return new CursorLoader(getContext(), MoviesContract.Movies.CONTENT_URI,
+        return new CursorLoader(getContext(), MoviesDbContract.Movies.CONTENT_URI,
                 null, selection, selectionArgs, null);
     }
 
@@ -148,19 +150,19 @@ class GridData implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private void getMoviesFromApi() {
         switch (mCurrentDbType) {
-            case MoviesContract.MovieTypes.NOW_PLAYING:
+            case MoviesDbContract.MovieTypes.NOW_PLAYING:
                 call = mApiService.getNowPlayingMovies();
                 break;
 
-            case MoviesContract.MovieTypes.UPCOMING:
+            case MoviesDbContract.MovieTypes.UPCOMING:
                 call = mApiService.getUpcomingMovies();
                 break;
 
-            case MoviesContract.MovieTypes.TOP_RATED:
+            case MoviesDbContract.MovieTypes.TOP_RATED:
                 call = mApiService.getTopRatedMovies();
                 break;
 
-            case MoviesContract.MovieTypes.POPULAR:
+            case MoviesDbContract.MovieTypes.POPULAR:
                 call = mApiService.getPopularMovies();
                 break;
         }
