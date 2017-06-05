@@ -24,10 +24,9 @@ import com.asafvaron.themoviedbtest.R;
 import com.asafvaron.themoviedbtest.Utils.Consts;
 import com.asafvaron.themoviedbtest.Utils.Prefs;
 import com.asafvaron.themoviedbtest.activity.MainActivity;
-import com.asafvaron.themoviedbtest.data.sql_db.MoviesDbContract;
+import com.asafvaron.themoviedbtest.decorations.GridSpacingItemDecoration;
 import com.asafvaron.themoviedbtest.model.Movie;
 import com.asafvaron.themoviedbtest.ui.movie_details.MovieDetailFragment;
-import com.asafvaron.themoviedbtest.decorations.GridSpacingItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -117,30 +116,37 @@ public class MoviesFragment extends Fragment
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_now_playing:
-                mPresenter.loadMovies(MoviesDbContract.MovieTypes.NOW_PLAYING);
-                return true;
-
-            case R.id.action_upcoming:
-                mPresenter.loadMovies(MoviesDbContract.MovieTypes.UPCOMING);
-                return true;
-
-            case R.id.action_top_rated:
-                mPresenter.loadMovies(MoviesDbContract.MovieTypes.TOP_RATED);
-                return true;
-
-            case R.id.action_popular:
-                mPresenter.loadMovies(MoviesDbContract.MovieTypes.POPULAR);
-                return true;
-
-            case R.id.action_favorites:
-                loadFavoritesFragment();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() != 0) {
+            mPresenter.loadMovies(item.getTitle().toString());
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
         }
+
+//        switch (item.getItemId()) {
+//            case R.id.action_now_playing:
+//                mPresenter.loadMovies(MoviesDbContract.MovieTypes.NOW_PLAYING);
+//                return true;
+//
+//            case R.id.action_upcoming:
+//                mPresenter.loadMovies(MoviesDbContract.MovieTypes.UPCOMING);
+//                return true;
+//
+//            case R.id.action_top_rated:
+//                mPresenter.loadMovies(MoviesDbContract.MovieTypes.TOP_RATED);
+//                return true;
+//
+//            case R.id.action_popular:
+//                mPresenter.loadMovies(MoviesDbContract.MovieTypes.POPULAR);
+//                return true;
+//
+//            case R.id.action_favorites:
+//                loadFavoritesFragment();
+//                return true;
+//
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
     }
 
     private void loadFavoritesFragment() {
@@ -154,12 +160,6 @@ public class MoviesFragment extends Fragment
     @Override
     public void updateTitle(String title) {
         ((MainActivity) getActivity()).getSupportActionBar().setTitle(title);
-    }
-
-    @Override
-    public void onSuccessMoviesLoaded(List<Movie> movies) {
-        Log.i(TAG, "onSuccessMoviesLoaded: ");
-        mMoviesGridAdapter.setData(movies);
     }
 
     @Override
@@ -179,5 +179,11 @@ public class MoviesFragment extends Fragment
                 .findFragmentByTag(MovieDetailFragment.class.getSimpleName()) != null) {
             getActivity().onBackPressed();
         }
+    }
+
+    @Override
+    public void onSuccessMoviesLoaded(List<? extends Movie> movies) {
+        Log.i(TAG, "onSuccessMoviesLoaded: ");
+        mMoviesGridAdapter.setData((List<Movie>) movies);
     }
 }
