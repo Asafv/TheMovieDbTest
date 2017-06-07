@@ -29,6 +29,6 @@ interface MoviesContract {
     /* Model/Presenter communicator */
     interface Presenter {
 
-        fun loadMovies(type: String)
+        fun loadMovies(type: String? = null)
     }
 }

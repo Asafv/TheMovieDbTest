@@ -141,29 +141,29 @@ public class SnappingFragment extends Fragment
     }
 
     @Override
-    public void onNowPlayingLoaded(List<Movie> movies) {
-        SnapAdapter snapAdapter = new SnapAdapter(movies, true);
+    public void onNowPlayingLoaded(List<? extends Movie> movies) {
+        SnapAdapter snapAdapter = new SnapAdapter((List<Movie>) movies, true);
         mRvNowPlayingList.setAdapter(snapAdapter);
         snapAdapter.setListener(this);
     }
 
     @Override
-    public void onTopRatedLoaded(List<Movie> movies) {
-        SnapAdapter snapAdapter = new SnapAdapter(movies, true);
+    public void onTopRatedLoaded(List<? extends Movie> movies) {
+        SnapAdapter snapAdapter = new SnapAdapter((List<Movie>) movies, true);
         mRvTopRatedList.setAdapter(snapAdapter);
         snapAdapter.setListener(this);
     }
 
     @Override
-    public void onUpcomingLoaded(List<Movie> movies) {
-        SnapAdapter snapAdapter = new SnapAdapter(movies, true);
+    public void onUpcomingLoaded(List<? extends Movie> movies) {
+        SnapAdapter snapAdapter = new SnapAdapter((List<Movie>) movies, true);
         mRvUpcomingList.setAdapter(snapAdapter);
         snapAdapter.setListener(this);
     }
 
     @Override
-    public void onPopularLoaded(List<Movie> movies) {
-        SnapAdapter snapAdapter = new SnapAdapter(movies, true);
+    public void onPopularLoaded(List<? extends Movie> movies) {
+        SnapAdapter snapAdapter = new SnapAdapter((List<Movie>) movies, true);
         mRvPopularList.setAdapter(snapAdapter);
         snapAdapter.setListener(this);
     }

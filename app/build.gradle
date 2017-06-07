@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
-apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'kotlin-android'
+//apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -23,21 +24,32 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    // Specifies a flavor dimension.
+    flavorDimensions "color"
+
     // If you need to add more flavors, consider using flavor dimensions.
     productFlavors {
-        mock {
-            applicationIdSuffix = ".mock"
+        dev {
+            applicationIdSuffix = ".dev"
+            dimension "color"
         }
-        prod {
 
+         mock {
+            applicationIdSuffix = ".mock"
+            dimension "color"
+        }
+
+        prod {
+            dimension "color"
         }
     }
 
     // Remove mockRelease as it's not needed.
     android.variantFilter { variant ->
-        if(variant.buildType.name.equals('release')
-                && variant.getFlavors().get(0).name.equals('mock')) {
-            variant.setIgnore(true);
+        if(variant.buildType.name == 'release'
+                && variant.getFlavors().get(0).name == 'mock') {
+            variant.setIgnore(true)
         }
     }
 
@@ -105,6 +117,7 @@ dependencies {
     // butterknife
     compile "com.jakewharton:butterknife:$rootProject.butterKnifeVersion"
     annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterKnifeCompilerVersion"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 
 }
 
@@ -127,5 +140,8 @@ configurations.compile.dependencies.each { compileDependency ->
     configurations.androidTestCompile.dependencies.each { androidTestCompileDependency ->
         configurations.androidTestCompile.exclude module: "${compileDependency.getName()}"
     }
+}
+repositories {
+    mavenCentral()
 }
 

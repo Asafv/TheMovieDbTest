@@ -8,13 +8,13 @@ import com.asafvaron.themoviedbtest.model.Movie
 internal interface SnappingContract {
 
     interface View {
-        fun onNowPlayingLoaded(movies: List<Movie>)
+        fun onNowPlayingLoaded(movies: List<Movie>?)
 
-        fun onTopRatedLoaded(movies: List<Movie>)
+        fun onTopRatedLoaded(movies: List<Movie>?)
 
-        fun onUpcomingLoaded(movies: List<Movie>)
+        fun onUpcomingLoaded(movies: List<Movie>?)
 
-        fun onPopularLoaded(movies: List<Movie>)
+        fun onPopularLoaded(movies: List<Movie>?)
     }
 
     interface Presenter {

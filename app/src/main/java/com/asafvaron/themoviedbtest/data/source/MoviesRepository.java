@@ -55,6 +55,6 @@ public class MoviesRepository implements MoviesDataSource {
 
     @Override
     public Observable<List<Movie>> getMoviesByType(String type) {
-        return null;
+        return Observable.empty();
     }
 }

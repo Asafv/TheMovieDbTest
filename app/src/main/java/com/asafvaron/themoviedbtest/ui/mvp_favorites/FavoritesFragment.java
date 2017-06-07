@@ -103,13 +103,13 @@ public class FavoritesFragment extends Fragment
     }
 
     @Override
-    public void onLoadComplete(List<Movie> favsList) {
+    public void onLoadComplete(List<? extends Movie> favsList) {
         Log.d(TAG, "onLoadComplete: favsList: " + favsList);
         if (favsList.size() == 0) {
             mTvInfo.setText(getString(R.string.no_favorites_found));
         } else {
             mTvInfo.setVisibility(View.GONE);
-            mFavsAdapter.updateData(favsList);
+            mFavsAdapter.updateData((List<Movie>) favsList);
         }
     }
 
