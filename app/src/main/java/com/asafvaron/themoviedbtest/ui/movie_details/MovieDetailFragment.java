@@ -18,8 +18,8 @@ import android.widget.Toast;
 
 import com.asafvaron.themoviedbtest.R;
 import com.asafvaron.themoviedbtest.activity.MainActivity;
-import com.asafvaron.themoviedbtest.model.Movie;
 import com.asafvaron.themoviedbtest.data.api.MoviesApi;
+import com.asafvaron.themoviedbtest.model.Movie;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
@@ -68,10 +68,8 @@ public class MovieDetailFragment extends Fragment
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        if (getArguments() != null) {
-            mMovie = (Movie) getArguments().getSerializable("movie");
-            mPresenter = new MovieDetailPresenter(this, new MovieDetailModel(mMovie));
-        }
+        mMovie = (Movie) getArguments().getSerializable("movie");
+        mPresenter = new MovieDetailPresenter(this, new MovieDetailModel(mMovie));
     }
 
     @Nullable
@@ -173,4 +171,8 @@ public class MovieDetailFragment extends Fragment
         Toast.makeText(getContext(), err, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void setPresenter(MovieDetailContract.Presenter presenter) {
+
+    }
 }

@@ -21,6 +21,8 @@ class MovieDetailPresenter implements MovieDetailContract.Presenter {
     MovieDetailPresenter(MovieDetailContract.View view, MovieDetailModel movieDetailModel) {
         mView = checkNotNull(view, "View cannot be null!");
         mData = checkNotNull(movieDetailModel, "Model cannot be null!!");
+        // XXX why needed??
+        mView.setPresenter(this);
     }
 
     @Override
